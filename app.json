@@ -1,30 +1,27 @@
 {
   "expo": {
-    "name": "KINETIC - Fitness Tracker",
-    "slug": "CodeAlpha_FitnessTrackerApp",
+    "name": "Pop Cartoon Flashcard Quiz",
+    "slug": "CodeAlpha_FlashcardQuizApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#121310"
+      "backgroundColor": "#fcfae6"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.codealpha.kinetickfitnesstracker"
+      "bundleIdentifier": "com.codealpha.flashcardquizapp"
     },
     "android": {
-      "package": "com.codealpha.kinetickfitnesstracker",
+      "package": "com.codealpha.flashcardquizapp",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#121310"
-      },
-      "permissions": [
-        "android.permission.ACTIVITY_RECOGNITION"
-      ]
+        "backgroundColor": "#fcfae6"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png",

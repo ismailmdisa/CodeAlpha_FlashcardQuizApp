@@ -1,7 +1,7 @@
 {
-  "name": "codealpha-fitness-tracker-app",
+  "name": "codealpha-flashcard-quiz-app",
   "version": "1.0.0",
-  "description": "Cross-platform mobile and web fitness tracking application with local SQLite persistence for CodeAlpha Internship Task 3",
+  "description": "Interactive Pop Cartoon Flashcard Quiz App with Stitch design, living mascot Gloop, 3D tactile physics, and CRUD card management for CodeAlpha Internship",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
