@@ -50,25 +50,29 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
     }).start();
   }, [isFlipped, animatedValue]);
 
-  // Card Flip Interpolations
+  // Card Flip Interpolations with strict clamping
   const frontInterpolate = animatedValue.interpolate({
     inputRange: [0, 180],
     outputRange: ['0deg', '180deg'],
+    extrapolate: 'clamp',
   });
 
   const backInterpolate = animatedValue.interpolate({
     inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
+    outputRange: ['180deg', '0deg'],
+    extrapolate: 'clamp',
   });
 
   const frontOpacity = animatedValue.interpolate({
-    inputRange: [89, 90],
-    outputRange: [1, 0],
+    inputRange: [0, 85, 95, 180],
+    outputRange: [1, 1, 0, 0],
+    extrapolate: 'clamp',
   });
 
   const backOpacity = animatedValue.interpolate({
-    inputRange: [89, 90],
-    outputRange: [0, 1],
+    inputRange: [0, 85, 95, 180],
+    outputRange: [0, 0, 1, 1],
+    extrapolate: 'clamp',
   });
 
   // Pick category emoji
@@ -119,8 +123,8 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
         ]}
       >
         {/* Background Graphic Blobs */}
-        <View style={styles.bgBlobTopRight} />
-        <View style={styles.bgBlobBottomLeft} />
+        <View style={styles.bgBlobTopRight} pointerEvents="none" />
+        <View style={styles.bgBlobBottomLeft} pointerEvents="none" />
 
         <View style={styles.cardHeader}>
           {/* Category Chip */}
@@ -134,6 +138,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             <TouchableOpacity
               onPress={() => onEdit(card)}
               style={styles.actionIconBtn}
+              aria-label="Edit card"
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Edit3 size={15} color="#09090b" />
@@ -141,6 +146,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             <TouchableOpacity
               onPress={() => onDelete(card)}
               style={[styles.actionIconBtn, styles.deleteIconBtn]}
+              aria-label="Delete card"
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Trash2 size={15} color={THEME.colors.punchCoral} />
@@ -193,8 +199,8 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
         ]}
       >
         {/* Background Graphic Blobs */}
-        <View style={styles.bgBlobTopRight} />
-        <View style={styles.bgBlobBottomLeft} />
+        <View style={styles.bgBlobTopRight} pointerEvents="none" />
+        <View style={styles.bgBlobBottomLeft} pointerEvents="none" />
 
         <View style={styles.cardHeader}>
           {/* Fact Checked Chip */}
@@ -207,6 +213,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             <TouchableOpacity
               onPress={() => onEdit(card)}
               style={styles.actionIconBtn}
+              aria-label="Edit card"
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Edit3 size={15} color="#09090b" />
@@ -214,6 +221,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             <TouchableOpacity
               onPress={() => onDelete(card)}
               style={[styles.actionIconBtn, styles.deleteIconBtn]}
+              aria-label="Delete card"
               hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >
               <Trash2 size={15} color={THEME.colors.punchCoral} />

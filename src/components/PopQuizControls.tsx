@@ -58,6 +58,7 @@ export const PopQuizControls: React.FC<PopQuizControlsProps> = ({
           <TouchableOpacity
             style={styles.potatoBtn}
             onPress={() => onRateRecall('BLANKED')}
+            aria-label="Potato Brain Wrong"
             onPressIn={() => animatePress(potatoPress, true)}
             onPressOut={() => animatePress(potatoPress, false)}
             activeOpacity={0.9}
@@ -77,6 +78,7 @@ export const PopQuizControls: React.FC<PopQuizControlsProps> = ({
           <TouchableOpacity
             style={styles.gigaBtn}
             onPress={() => onRateRecall('NAILED_IT')}
+            aria-label="Gigachad Nailed It"
             onPressIn={() => animatePress(gigaPress, true)}
             onPressOut={() => animatePress(gigaPress, false)}
             activeOpacity={0.9}
@@ -104,6 +106,7 @@ export const PopQuizControls: React.FC<PopQuizControlsProps> = ({
             style={[styles.prevBtn, isFirstCard && styles.prevBtnDisabled]}
             onPress={onPrev}
             disabled={isFirstCard}
+            aria-label="Previous card"
             onPressIn={() => animatePress(prevPress, true)}
             onPressOut={() => animatePress(prevPress, false)}
             activeOpacity={0.9}
@@ -120,6 +123,7 @@ export const PopQuizControls: React.FC<PopQuizControlsProps> = ({
           <TouchableOpacity
             style={styles.nextBtn}
             onPress={onNext}
+            aria-label="Next card"
             onPressIn={() => animatePress(nextPress, true)}
             onPressOut={() => animatePress(nextPress, false)}
             activeOpacity={0.9}

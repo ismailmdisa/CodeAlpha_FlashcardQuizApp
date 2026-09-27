@@ -81,10 +81,16 @@ export const FlashcardScreen: React.FC = () => {
   // When rating a card (Potato Brain / Gigachad)
   const handleRateRecall = (rating: MasteryRating) => {
     recordRecallResult(rating);
-    // Auto advance after 1.2s
-    setTimeout(() => {
-      nextCard();
-    }, 1200);
+    if (!isFlipped) {
+      // If user hasn't seen the answer yet, reveal it immediately so they can study!
+      if (soundEnabled) soundFx.playFlip();
+      toggleFlip();
+    } else {
+      // If user already inspected the answer, advance to next card after a snappy celebration delay
+      setTimeout(() => {
+        nextCard();
+      }, 700);
+    }
   };
 
   // Keyboard navigation for Desktop Web

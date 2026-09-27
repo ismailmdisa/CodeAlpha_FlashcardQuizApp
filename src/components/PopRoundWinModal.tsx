@@ -152,6 +152,7 @@ export const PopRoundWinModal: React.FC<PopRoundWinModalProps> = ({
               <TouchableOpacity
                 style={styles.primaryBtn}
                 onPress={onRestart}
+                aria-label="Play Again"
                 activeOpacity={0.85}
               >
                 <RotateCcw size={18} color="#ffffff" />

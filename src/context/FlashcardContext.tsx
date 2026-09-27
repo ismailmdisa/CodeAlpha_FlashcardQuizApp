@@ -111,23 +111,29 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setIsFlipped(false);
   }, []);
 
-  // Navigation handlers
+  // Navigation handlers with functional state updates
   const nextCard = useCallback(() => {
-    if (currentIndex < filteredCards.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      setIsFlipped(false);
-    } else if (currentIndex === filteredCards.length - 1 && filteredCards.length > 0) {
-      // Reached the end of deck! Open summary modal
-      setIsSummaryModalOpen(true);
-    }
-  }, [currentIndex, filteredCards.length]);
+    setCurrentIndex((prev) => {
+      if (prev < filteredCards.length - 1) {
+        return prev + 1;
+      } else if (prev >= filteredCards.length - 1 && filteredCards.length > 0) {
+        if (!isSummaryModalOpen) {
+          setIsSummaryModalOpen(true);
+          return prev;
+        } else {
+          setIsSummaryModalOpen(false);
+          return 0;
+        }
+      }
+      return prev;
+    });
+    setIsFlipped(false);
+  }, [filteredCards.length, isSummaryModalOpen]);
 
   const prevCard = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-      setIsFlipped(false);
-    }
-  }, [currentIndex]);
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    setIsFlipped(false);
+  }, []);
 
   const goToCard = useCallback((index: number) => {
     if (index >= 0 && index < filteredCards.length) {
