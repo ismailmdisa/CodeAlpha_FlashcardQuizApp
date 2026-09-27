@@ -14,42 +14,35 @@ import { Plus, BookOpen, Sparkles } from 'lucide-react-native';
 import { useFlashcards } from '../context/FlashcardContext';
 import { useGamification } from '../context/GamificationContext';
 import { THEME } from '../theme/flashcardTheme';
-import { FlashcardViewer } from '../components/FlashcardViewer';
-import { QuizControls } from '../components/QuizControls';
-import { ProgressHeader } from '../components/ProgressHeader';
+import { PopHeader } from '../components/PopHeader';
+import { MascotCharacter } from '../components/MascotCharacter';
+import { PopFlashcardViewer } from '../components/PopFlashcardViewer';
+import { PopQuizControls } from '../components/PopQuizControls';
+import { PopRoundWinModal } from '../components/PopRoundWinModal';
 import { AddEditCardModal } from '../components/AddEditCardModal';
 import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 import { CardListModal } from '../components/CardListModal';
-import { QuizSummaryModal } from '../components/QuizSummaryModal';
-import { ComboMeter } from '../components/ComboMeter';
-import { MascotBanner } from '../components/MascotBanner';
-import { ModeSelector } from '../components/ModeSelector';
-import { RecallActionButtons } from '../components/RecallActionButtons';
-import { BossBattleBar } from '../components/BossBattleBar';
-import { SpeedRunTimer } from '../components/SpeedRunTimer';
 import { ConfettiExplosion } from '../components/ConfettiExplosion';
 import { Flashcard } from '../types/flashcard';
 import { soundFx } from '../services/soundFx';
+import { MasteryRating } from '../services/mascotReactions';
 
 export const FlashcardScreen: React.FC = () => {
   const {
     cards,
     filteredCards,
     categories,
-    selectedCategory,
     currentIndex,
     currentCard,
     isFlipped,
     isLoading,
 
     toggleFlip,
-    showAnswer,
     nextCard,
     prevCard,
     goToCard,
     shuffleDeck,
     restartQuiz,
-    setSelectedCategory,
 
     addCard,
     updateCard,
@@ -67,12 +60,14 @@ export const FlashcardScreen: React.FC = () => {
   } = useFlashcards();
 
   const {
-    quizMode,
+    currentStreak,
+    bestStreak,
+    xp,
     soundEnabled,
     latestReaction,
     showConfetti,
     recordRecallResult,
-    clearReaction,
+    toggleSound,
   } = useGamification();
 
   const [deletingCard, setDeletingCard] = useState<Flashcard | null>(null);
@@ -83,10 +78,10 @@ export const FlashcardScreen: React.FC = () => {
     toggleFlip();
   };
 
-  // When rating a card (Blanked / Kinda / Nailed It)
-  const handleRateRecall = (rating: 'NAILED_IT' | 'KINDA_KNEW' | 'BLANKED') => {
+  // When rating a card (Potato Brain / Gigachad)
+  const handleRateRecall = (rating: MasteryRating) => {
     recordRecallResult(rating);
-    // Smoothly auto-advance to next card after 1.2s delay or keep active
+    // Auto advance after 1.2s
     setTimeout(() => {
       nextCard();
     }, 1200);
@@ -111,14 +106,10 @@ export const FlashcardScreen: React.FC = () => {
         e.preventDefault();
         handleToggleFlip();
       } else if (isFlipped) {
-        // Numeric recall shortcuts on Web: 1=Blanked, 2=Kinda, 3=Nailed It
         if (e.key === '1') {
           e.preventDefault();
           handleRateRecall('BLANKED');
-        } else if (e.key === '2') {
-          e.preventDefault();
-          handleRateRecall('KINDA_KNEW');
-        } else if (e.key === '3') {
+        } else if (e.key === '2' || e.key === '3') {
           e.preventDefault();
           handleRateRecall('NAILED_IT');
         }
@@ -140,8 +131,8 @@ export const FlashcardScreen: React.FC = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={THEME.colors.primary} />
-        <Text style={styles.loadingText}>Loading Flashcards...</Text>
+        <ActivityIndicator size="large" color="#09090b" />
+        <Text style={styles.loadingText}>Loading Pop Flashcards...</Text>
       </View>
     );
   }
@@ -149,12 +140,16 @@ export const FlashcardScreen: React.FC = () => {
   const isFirstCard = currentIndex === 0;
   const isLastCard = currentIndex === filteredCards.length - 1;
 
+  // Mascot bubble text and comment
+  const bubbleTitle = latestReaction ? latestReaction.title : 'THINK HARD!';
+  const bubbleEmoji = latestReaction ? latestReaction.emoji : '⚡';
+  const mascotComment = latestReaction
+    ? latestReaction.comment
+    : "You're crushing it, Einstein! ⚡";
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={THEME.colors.background}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor={THEME.colors.background} />
 
       {/* Confetti Explosion Burst */}
       {showConfetti && <ConfettiExplosion />}
@@ -163,50 +158,30 @@ export const FlashcardScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Progress & Brand Header */}
-        <ProgressHeader
+        {/* Top Navbar & Tactile Progress Dots */}
+        <PopHeader
           currentIndex={currentIndex}
           totalCards={filteredCards.length}
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
+          currentStreak={currentStreak}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
           onOpenAddModal={() => setIsAddModalOpen(true)}
-          onOpenManageModal={() => setIsManageModalOpen(true)}
+          onOpenLibrary={() => setIsManageModalOpen(true)}
+          onRestartDeck={restartQuiz}
         />
 
-        {/* Gamified Combo, Level & Sound Meter */}
-        <ComboMeter />
-
-        {/* Study Mode Selector (Chill / Speed Run / Boss Battle) */}
-        <ModeSelector />
-
-        {/* Speed Run Countdown Timer */}
-        {quizMode === 'SPEED_RUN' && (
-          <SpeedRunTimer
-            cardIndex={currentIndex}
-            isFlipped={isFlipped}
-            soundEnabled={soundEnabled}
-            onTimeUp={() => {
-              showAnswer();
-              recordRecallResult('BLANKED');
-            }}
-          />
-        )}
-
-        {/* Boss Battle Bar */}
-        {quizMode === 'BOSS_BATTLE' && <BossBattleBar />}
-
-        {/* Mascot Roast & Praise Banner */}
-        <MascotBanner
-          reaction={latestReaction}
-          onDismiss={clearReaction}
+        {/* Living Mascot Character Stage */}
+        <MascotCharacter
+          bubbleText={bubbleTitle}
+          bubbleEmoji={bubbleEmoji}
+          onPress={handleToggleFlip}
         />
 
-        {/* Main Flashcard Arena */}
+        {/* Hero Flashcard Stage */}
         {filteredCards.length > 0 && currentCard ? (
-          <View style={styles.studyArena}>
-            {/* The Flashcard with 3D Flip */}
-            <FlashcardViewer
+          <View style={styles.mainStage}>
+            {/* The Tactile Neo-Brutalist Flashcard */}
+            <PopFlashcardViewer
               card={currentCard}
               isFlipped={isFlipped}
               onToggleFlip={handleToggleFlip}
@@ -216,55 +191,34 @@ export const FlashcardScreen: React.FC = () => {
               totalCards={filteredCards.length}
             />
 
-            {/* Active Recall Buttons shown when answer is revealed */}
-            {isFlipped && (
-              <RecallActionButtons onRate={handleRateRecall} />
-            )}
-
-            {/* Navigation & Answer Controls */}
-            <QuizControls
+            {/* Direct Tactile Control Zone (Potato Brain, Gigachad, Prev, Next Chaos) */}
+            <PopQuizControls
               onPrev={prevCard}
               onNext={nextCard}
-              onToggleFlip={handleToggleFlip}
-              onShuffle={shuffleDeck}
-              onReset={restartQuiz}
-              isFlipped={isFlipped}
+              onRateRecall={handleRateRecall}
               isFirstCard={isFirstCard}
               isLastCard={isLastCard}
-              totalCards={filteredCards.length}
+              mascotComment={mascotComment}
             />
           </View>
         ) : (
           /* Empty Deck State */
           <View style={styles.emptyDeckState}>
             <View style={styles.emptyIconContainer}>
-              <BookOpen size={48} color={THEME.colors.primary} />
+              <BookOpen size={48} color="#09090b" />
             </View>
-            <Text style={styles.emptyDeckTitle}>No Flashcards Available</Text>
+            <Text style={styles.emptyDeckTitle}>No Flashcards in Deck!</Text>
             <Text style={styles.emptyDeckSubtitle}>
-              {selectedCategory !== 'ALL'
-                ? `There are no cards in the "${selectedCategory}" category.`
-                : 'Your flashcard collection is currently empty.'}
+              Tap the button below to add your first study question.
             </Text>
 
-            <View style={styles.emptyActionRow}>
-              {selectedCategory !== 'ALL' && (
-                <TouchableOpacity
-                  style={styles.emptySecondaryBtn}
-                  onPress={() => setSelectedCategory('ALL')}
-                >
-                  <Text style={styles.emptySecondaryBtnText}>View All Decks</Text>
-                </TouchableOpacity>
-              )}
-
-              <TouchableOpacity
-                style={styles.emptyPrimaryBtn}
-                onPress={() => setIsAddModalOpen(true)}
-              >
-                <Plus size={18} color={THEME.colors.textInverse} />
-                <Text style={styles.emptyPrimaryBtnText}>Create First Card</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={styles.emptyAddBtn}
+              onPress={() => setIsAddModalOpen(true)}
+            >
+              <Plus size={18} color="#09090b" />
+              <Text style={styles.emptyAddBtnText}>Create First Pop Card</Text>
+            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
@@ -307,13 +261,12 @@ export const FlashcardScreen: React.FC = () => {
         }}
       />
 
-      {/* Deck Library Modal */}
+      {/* Card Library Modal */}
       <CardListModal
         visible={isManageModalOpen}
         cards={cards}
         onClose={() => setIsManageModalOpen(false)}
         onSelectCard={(index) => {
-          setSelectedCategory('ALL');
           goToCard(index);
         }}
         onEditCard={(card) => {
@@ -331,16 +284,14 @@ export const FlashcardScreen: React.FC = () => {
         }}
       />
 
-      {/* Quiz Completion / Summary Modal */}
-      <QuizSummaryModal
+      {/* Round Win Celebration Modal */}
+      <PopRoundWinModal
         visible={isSummaryModalOpen}
         totalCards={filteredCards.length}
+        bestStreak={bestStreak}
+        xpEarned={xp}
         onRestart={restartQuiz}
         onShuffle={shuffleDeck}
-        onAddNew={() => {
-          setIsSummaryModalOpen(false);
-          setIsAddModalOpen(true);
-        }}
         onClose={() => setIsSummaryModalOpen(false)}
       />
     </SafeAreaView>
@@ -354,9 +305,9 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingHorizontal: THEME.spacing.lg,
-    paddingVertical: THEME.spacing.md,
-    maxWidth: 700,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    maxWidth: 480,
     width: '100%',
     alignSelf: 'center',
   },
@@ -368,11 +319,11 @@ const styles = StyleSheet.create({
     backgroundColor: THEME.colors.background,
   },
   loadingText: {
-    fontSize: THEME.typography.sizes.md,
-    color: THEME.colors.textSecondary,
-    fontWeight: THEME.typography.weights.medium,
+    fontSize: 15,
+    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
-  studyArena: {
+  mainStage: {
     width: '100%',
     alignItems: 'center',
   },
@@ -386,56 +337,51 @@ const styles = StyleSheet.create({
   emptyIconContainer: {
     width: 80,
     height: 80,
-    borderRadius: THEME.radius.pill,
-    backgroundColor: THEME.colors.primaryLight,
+    borderRadius: 40,
+    backgroundColor: THEME.colors.neonLime,
+    borderWidth: 2.5,
+    borderColor: '#09090b',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
   },
   emptyDeckTitle: {
-    fontSize: THEME.typography.sizes.xl,
-    fontWeight: THEME.typography.weights.bold,
-    color: THEME.colors.textPrimary,
+    fontSize: 20,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   emptyDeckSubtitle: {
-    fontSize: THEME.typography.sizes.sm,
-    color: THEME.colors.textSecondary,
+    fontSize: 13,
+    color: THEME.colors.textMuted,
     textAlign: 'center',
-    maxWidth: 360,
-    lineHeight: 20,
+    maxWidth: 320,
+    lineHeight: 18,
   },
-  emptyActionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginTop: 16,
-  },
-  emptyPrimaryBtn: {
+  emptyAddBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.primary,
-    ...THEME.shadows.button,
+    borderRadius: THEME.radius.full,
+    backgroundColor: THEME.colors.neonLime,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 4,
+    marginTop: 10,
   },
-  emptyPrimaryBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textInverse,
-  },
-  emptySecondaryBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surface,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-  },
-  emptySecondaryBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.medium,
-    color: THEME.colors.textSecondary,
+  emptyAddBtnText: {
+    fontSize: 14,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
 });

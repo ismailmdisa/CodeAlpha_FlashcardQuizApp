@@ -29,12 +29,12 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
       <View style={styles.overlay}>
         <View style={styles.content}>
           <View style={styles.iconContainer}>
-            <AlertTriangle size={24} color={THEME.colors.danger} />
+            <AlertTriangle size={24} color="#ffffff" />
           </View>
 
-          <Text style={styles.title}>Delete Flashcard?</Text>
+          <Text style={styles.title}>Delete This Card? 🗑️</Text>
           <Text style={styles.message}>
-            Are you sure you want to permanently delete this card?
+            Are you sure you want to delete this study flashcard?
           </Text>
 
           <View style={styles.cardPreview}>
@@ -47,9 +47,9 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             <TouchableOpacity
               style={styles.cancelBtn}
               onPress={onClose}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
-              <Text style={styles.cancelBtnText}>Cancel</Text>
+              <Text style={styles.cancelBtnText}>Keep Card</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -57,8 +57,8 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
               onPress={onConfirm}
               activeOpacity={0.85}
             >
-              <Trash2 size={16} color={THEME.colors.textInverse} />
-              <Text style={styles.deleteBtnText}>Yes, Delete</Text>
+              <Trash2 size={16} color="#ffffff" />
+              <Text style={styles.deleteBtnText}>Delete!</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -70,54 +70,67 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.5)',
+    backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: THEME.spacing.lg,
+    padding: 16,
   },
   content: {
     width: '100%',
-    maxWidth: 420,
-    backgroundColor: THEME.colors.surface,
-    borderRadius: THEME.radius.xl,
-    padding: THEME.spacing.xl,
+    maxWidth: 400,
+    backgroundColor: THEME.colors.creamSurface,
+    borderRadius: 26,
+    padding: 20,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-    ...THEME.shadows.card,
+    borderWidth: 2.5,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 8,
   },
   iconContainer: {
     width: 48,
     height: 48,
-    borderRadius: THEME.radius.pill,
-    backgroundColor: THEME.colors.dangerLight,
+    borderRadius: 24,
+    backgroundColor: THEME.colors.punchCoral,
+    borderWidth: 2,
+    borderColor: '#09090b',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   title: {
-    fontSize: THEME.typography.sizes.lg,
-    fontWeight: THEME.typography.weights.bold,
-    color: THEME.colors.textPrimary,
+    fontSize: 18,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   message: {
-    fontSize: THEME.typography.sizes.sm,
+    fontSize: 13,
     color: THEME.colors.textSecondary,
     textAlign: 'center',
     marginTop: 6,
+    fontWeight: THEME.typography.weights.medium,
   },
   cardPreview: {
     width: '100%',
     padding: 12,
-    backgroundColor: THEME.colors.background,
-    borderRadius: THEME.radius.md,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: '#09090b',
     marginVertical: 14,
   },
   previewQuestion: {
-    fontSize: THEME.typography.sizes.sm,
-    color: THEME.colors.textSecondary,
+    fontSize: 13,
+    color: '#09090b',
+    fontWeight: THEME.typography.weights.semibold,
     fontStyle: 'italic',
   },
   buttonRow: {
@@ -129,13 +142,20 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     alignItems: 'center',
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   cancelBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.medium,
-    color: THEME.colors.textSecondary,
+    fontSize: 14,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   deleteBtn: {
     flex: 1,
@@ -144,12 +164,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     paddingVertical: 12,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.danger,
+    borderRadius: THEME.radius.full,
+    backgroundColor: THEME.colors.punchCoral,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   deleteBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textInverse,
+    fontSize: 14,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#ffffff',
   },
 });

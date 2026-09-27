@@ -82,9 +82,9 @@ export const CardListModal: React.FC<CardListModalProps> = ({
           {/* Header */}
           <View style={styles.header}>
             <View>
-              <Text style={styles.title}>Card Library</Text>
+              <Text style={styles.title}>Card Library 📚</Text>
               <Text style={styles.subtitle}>
-                {cards.length} cards total • Manage and customize your deck
+                {cards.length} cards total • Manage & customize your deck
               </Text>
             </View>
             <TouchableOpacity
@@ -92,7 +92,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
               style={styles.closeBtn}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <X size={20} color={THEME.colors.textSecondary} />
+              <X size={18} color="#09090b" />
             </TouchableOpacity>
           </View>
 
@@ -102,14 +102,14 @@ export const CardListModal: React.FC<CardListModalProps> = ({
               <Search size={16} color={THEME.colors.textMuted} />
               <TextInput
                 style={styles.searchInput}
-                placeholder="Search cards by question or keyword..."
+                placeholder="Search flashcards..."
                 placeholderTextColor={THEME.colors.textMuted}
                 value={searchQuery}
                 onChangeText={setSearchQuery}
               />
               {searchQuery.length > 0 && (
                 <TouchableOpacity onPress={() => setSearchQuery('')}>
-                  <X size={16} color={THEME.colors.textMuted} />
+                  <X size={16} color="#09090b" />
                 </TouchableOpacity>
               )}
             </View>
@@ -122,7 +122,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
               }}
               activeOpacity={0.8}
             >
-              <Plus size={16} color={THEME.colors.textInverse} />
+              <Plus size={16} color="#09090b" />
               <Text style={styles.addNewBtnText}>Add</Text>
             </TouchableOpacity>
           </View>
@@ -142,7 +142,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
                   filterCategory === 'ALL' && styles.categoryChipTextActive,
                 ]}
               >
-                All
+                All ({cards.length})
               </Text>
             </TouchableOpacity>
             {categories.map((cat) => (
@@ -201,22 +201,18 @@ export const CardListModal: React.FC<CardListModalProps> = ({
                 <View style={styles.cardItemActions}>
                   <TouchableOpacity
                     style={styles.itemActionBtn}
-                    onPress={() => {
-                      onEditCard(item);
-                    }}
+                    onPress={() => onEditCard(item)}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   >
-                    <Edit3 size={16} color={THEME.colors.textSecondary} />
+                    <Edit3 size={15} color="#09090b" />
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                    style={styles.itemActionBtn}
-                    onPress={() => {
-                      onDeleteCard(item);
-                    }}
+                    style={[styles.itemActionBtn, styles.deleteActionBtn]}
+                    onPress={() => onDeleteCard(item)}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   >
-                    <Trash2 size={16} color={THEME.colors.danger} />
+                    <Trash2 size={15} color={THEME.colors.punchCoral} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -232,21 +228,21 @@ export const CardListModal: React.FC<CardListModalProps> = ({
             }
           />
 
-          {/* Footer with Reset Defaults */}
+          {/* Footer Actions */}
           <View style={styles.footer}>
             <TouchableOpacity
               style={styles.resetBtn}
               onPress={onResetDefaults}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
-              <RotateCcw size={14} color={THEME.colors.textSecondary} />
-              <Text style={styles.resetBtnText}>Restore Sample Deck</Text>
+              <RotateCcw size={14} color="#09090b" />
+              <Text style={styles.resetBtnText}>Restore Defaults</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.doneBtn}
               onPress={onClose}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
               <Text style={styles.doneBtnText}>Close</Text>
             </TouchableOpacity>
@@ -260,111 +256,130 @@ export const CardListModal: React.FC<CardListModalProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.45)',
+    backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: THEME.spacing.lg,
+    padding: 16,
   },
   content: {
     width: '100%',
-    maxWidth: 640,
-    height: '85%',
-    backgroundColor: THEME.colors.surface,
-    borderRadius: THEME.radius.xl,
+    maxWidth: 580,
+    height: '86%',
+    backgroundColor: THEME.colors.creamSurface,
+    borderRadius: 28,
+    borderWidth: 2.5,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 8,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-    ...THEME.shadows.card,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: THEME.spacing.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: THEME.colors.surfaceSubtle,
+    padding: 18,
+    borderBottomWidth: 2,
+    borderBottomColor: '#09090b',
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   title: {
-    fontSize: THEME.typography.sizes.xl,
-    fontWeight: THEME.typography.weights.bold,
-    color: THEME.colors.textPrimary,
+    fontSize: 20,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   subtitle: {
-    fontSize: THEME.typography.sizes.xs,
+    fontSize: 12,
     color: THEME.colors.textMuted,
+    fontWeight: THEME.typography.weights.medium,
     marginTop: 2,
   },
   closeBtn: {
-    padding: 6,
-    borderRadius: THEME.radius.sm,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: THEME.spacing.xl,
-    paddingTop: THEME.spacing.md,
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingTop: 12,
   },
   searchContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-    borderRadius: THEME.radius.md,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    borderRadius: THEME.radius.full,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: THEME.colors.background,
+    backgroundColor: '#ffffff',
   },
   searchInput: {
     flex: 1,
-    fontSize: THEME.typography.sizes.sm,
-    color: THEME.colors.textPrimary,
+    fontSize: 13,
+    color: '#09090b',
+    fontWeight: THEME.typography.weights.medium,
   },
   addNewBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    backgroundColor: THEME.colors.primary,
-    borderRadius: THEME.radius.md,
-    ...THEME.shadows.button,
+    gap: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 9,
+    backgroundColor: THEME.colors.neonLime,
+    borderRadius: THEME.radius.full,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   addNewBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textInverse,
+    fontSize: 13,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   categoryBar: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
-    paddingHorizontal: THEME.spacing.xl,
+    paddingHorizontal: 16,
     paddingVertical: 10,
   },
   categoryChip: {
-    paddingVertical: 4,
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: THEME.radius.pill,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
   },
   categoryChipActive: {
-    backgroundColor: THEME.colors.primaryLight,
+    backgroundColor: THEME.colors.tertiaryFixed,
   },
   categoryChipText: {
-    fontSize: THEME.typography.sizes.xs,
-    color: THEME.colors.textSecondary,
-    fontWeight: THEME.typography.weights.medium,
-  },
-  categoryChipTextActive: {
-    color: THEME.colors.primary,
+    fontSize: 11,
+    color: '#09090b',
     fontWeight: THEME.typography.weights.bold,
   },
+  categoryChipTextActive: {
+    color: '#09090b',
+  },
   listContent: {
-    paddingHorizontal: THEME.spacing.xl,
+    paddingHorizontal: 16,
     paddingBottom: 20,
     gap: 10,
   },
@@ -372,10 +387,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 14,
-    backgroundColor: THEME.colors.background,
-    borderRadius: THEME.radius.lg,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
+    backgroundColor: '#ffffff',
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   cardMainInfo: {
     flex: 1,
@@ -385,61 +405,65 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: 10,
+    paddingRight: 8,
   },
   categoryTag: {
     paddingVertical: 2,
     paddingHorizontal: 8,
-    borderRadius: THEME.radius.sm,
-    backgroundColor: THEME.colors.surface,
+    borderRadius: THEME.radius.full,
+    backgroundColor: THEME.colors.surfaceSubtle,
     borderWidth: 1,
-    borderColor: THEME.colors.border,
+    borderColor: '#09090b',
   },
   categoryTagText: {
     fontSize: 10,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textSecondary,
+    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
   cardIndexText: {
     fontSize: 11,
-    fontWeight: THEME.typography.weights.semibold,
+    fontWeight: THEME.typography.weights.extrabold,
     color: THEME.colors.textMuted,
   },
   cardItemQuestion: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textPrimary,
+    fontSize: 14,
+    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
   cardItemAnswer: {
-    fontSize: THEME.typography.sizes.xs,
+    fontSize: 12,
     color: THEME.colors.textSecondary,
+    fontWeight: THEME.typography.weights.medium,
   },
   cardItemActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingLeft: 10,
+    paddingLeft: 8,
   },
   itemActionBtn: {
-    padding: 8,
-    borderRadius: THEME.radius.sm,
-    backgroundColor: THEME.colors.surface,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
+    padding: 7,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
+  },
+  deleteActionBtn: {
+    backgroundColor: '#fff1f2',
   },
   emptyContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 50,
-    gap: 10,
+    paddingVertical: 40,
+    gap: 8,
   },
   emptyTitle: {
-    fontSize: THEME.typography.sizes.md,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textSecondary,
+    fontSize: 15,
+    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
   emptySubtitle: {
-    fontSize: THEME.typography.sizes.xs,
+    fontSize: 12,
     color: THEME.colors.textMuted,
     textAlign: 'center',
   },
@@ -447,10 +471,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: THEME.spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: THEME.colors.surfaceSubtle,
-    backgroundColor: THEME.colors.surface,
+    padding: 14,
+    borderTopWidth: 2,
+    borderTopColor: '#09090b',
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   resetBtn: {
     flexDirection: 'row',
@@ -458,23 +482,25 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
   },
   resetBtnText: {
-    fontSize: THEME.typography.sizes.xs,
-    color: THEME.colors.textSecondary,
-    fontWeight: THEME.typography.weights.medium,
+    fontSize: 12,
+    color: '#09090b',
+    fontWeight: THEME.typography.weights.bold,
   },
   doneBtn: {
     paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    paddingHorizontal: 18,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#09090b',
   },
   doneBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    color: THEME.colors.textPrimary,
-    fontWeight: THEME.typography.weights.semibold,
+    fontSize: 13,
+    color: '#ffffff',
+    fontWeight: THEME.typography.weights.bold,
   },
 });

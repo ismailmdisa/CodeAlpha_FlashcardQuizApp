@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { X, Check, Plus, AlertCircle } from 'lucide-react-native';
+import { X, Check, AlertCircle, Sparkles } from 'lucide-react-native';
 import { Flashcard } from '../types/flashcard';
 import { THEME } from '../theme/flashcardTheme';
 
@@ -59,11 +59,11 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
 
   const handleSave = () => {
     if (!question.trim()) {
-      setError('Please provide a question for the front of the card.');
+      setError('Please provide a question for the front face.');
       return;
     }
     if (!answer.trim()) {
-      setError('Please provide an answer for the back of the card.');
+      setError('Please provide an answer for the back face.');
       return;
     }
 
@@ -92,11 +92,11 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
           <View style={styles.modalHeader}>
             <View>
               <Text style={styles.modalTitle}>
-                {isEditing ? 'Edit Flashcard' : 'Create New Flashcard'}
+                {isEditing ? 'Edit Pop Card ✏️' : 'Create Pop Card ✨'}
               </Text>
               <Text style={styles.modalSubtitle}>
                 {isEditing
-                  ? 'Update question, answer, or category'
+                  ? 'Update question, answer or category'
                   : 'Add a new study question to your deck'}
               </Text>
             </View>
@@ -105,7 +105,7 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
               style={styles.closeBtn}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
-              <X size={20} color={THEME.colors.textSecondary} />
+              <X size={18} color="#09090b" />
             </TouchableOpacity>
           </View>
 
@@ -116,20 +116,17 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
             {/* Error Banner */}
             {error && (
               <View style={styles.errorBox}>
-                <AlertCircle size={16} color={THEME.colors.danger} />
+                <AlertCircle size={16} color={THEME.colors.punchCoral} />
                 <Text style={styles.errorText}>{error}</Text>
               </View>
             )}
 
             {/* Question Input */}
             <View style={styles.inputGroup}>
-              <View style={styles.labelRow}>
-                <Text style={styles.label}>Question (Front Face)</Text>
-                <Text style={styles.requiredAsterisk}>*</Text>
-              </View>
+              <Text style={styles.label}>Question (Front Face) *</Text>
               <TextInput
                 style={[styles.textInput, styles.textArea]}
-                placeholder="e.g. What is the difference between let and const in JavaScript?"
+                placeholder="e.g. Can ostriches fly backwards?"
                 placeholderTextColor={THEME.colors.textMuted}
                 value={question}
                 onChangeText={(t) => {
@@ -143,13 +140,10 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
 
             {/* Answer Input */}
             <View style={styles.inputGroup}>
-              <View style={styles.labelRow}>
-                <Text style={styles.label}>Answer (Back Face)</Text>
-                <Text style={styles.requiredAsterisk}>*</Text>
-              </View>
+              <Text style={styles.label}>Answer (Back Face) *</Text>
               <TextInput
                 style={[styles.textInput, styles.textArea]}
-                placeholder="e.g. 'let' can be reassigned, while 'const' identifiers cannot be reassigned after declaration."
+                placeholder="e.g. NOPE! They can't even fly forward!"
                 placeholderTextColor={THEME.colors.textMuted}
                 value={answer}
                 onChangeText={(t) => {
@@ -157,85 +151,56 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
                   if (error) setError(null);
                 }}
                 multiline
-                numberOfLines={4}
+                numberOfLines={3}
               />
             </View>
 
-            {/* Category / Deck Input */}
+            {/* Category / Topic */}
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Category / Topic</Text>
               <TextInput
                 style={styles.textInput}
-                placeholder="e.g. JavaScript, React, Science"
+                placeholder="e.g. Animal Whiz Trivia, React & Web"
                 placeholderTextColor={THEME.colors.textMuted}
                 value={category}
                 onChangeText={setCategory}
               />
 
-              {/* Suggestions Chips */}
+              {/* Quick suggestions */}
               {existingCategories.length > 0 && (
-                <View style={styles.categorySuggestions}>
-                  <Text style={styles.suggestionTitle}>Existing topics:</Text>
-                  <View style={styles.chipsWrap}>
-                    {existingCategories.map((cat) => (
-                      <TouchableOpacity
-                        key={cat}
+                <View style={styles.chipsWrap}>
+                  {existingCategories.map((cat) => (
+                    <TouchableOpacity
+                      key={cat}
+                      style={[
+                        styles.categoryChip,
+                        category.trim().toLowerCase() === cat.toLowerCase() &&
+                          styles.categoryChipActive,
+                      ]}
+                      onPress={() => setCategory(cat)}
+                    >
+                      <Text
                         style={[
-                          styles.categoryChip,
+                          styles.categoryChipText,
                           category.trim().toLowerCase() === cat.toLowerCase() &&
-                            styles.categoryChipActive,
+                            styles.categoryChipTextActive,
                         ]}
-                        onPress={() => setCategory(cat)}
                       >
-                        <Text
-                          style={[
-                            styles.categoryChipText,
-                            category.trim().toLowerCase() === cat.toLowerCase() &&
-                              styles.categoryChipTextActive,
-                          ]}
-                        >
-                          {cat}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
+                        {cat}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
               )}
             </View>
-
-            {/* Difficulty Selector */}
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Difficulty Level</Text>
-              <View style={styles.difficultyRow}>
-                {(['Easy', 'Medium', 'Hard'] as const).map((lvl) => (
-                  <TouchableOpacity
-                    key={lvl}
-                    style={[
-                      styles.difficultyBtn,
-                      difficulty === lvl && styles.difficultyBtnActive,
-                    ]}
-                    onPress={() => setDifficulty(lvl)}
-                  >
-                    <Text
-                      style={[
-                        styles.difficultyBtnText,
-                        difficulty === lvl && styles.difficultyBtnTextActive,
-                      ]}
-                    >
-                      {lvl}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
           </ScrollView>
 
-          {/* Modal Actions */}
+          {/* Modal Footer Actions */}
           <View style={styles.modalFooter}>
             <TouchableOpacity
               style={styles.cancelBtn}
               onPress={onClose}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
               <Text style={styles.cancelBtnText}>Cancel</Text>
             </TouchableOpacity>
@@ -245,7 +210,7 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
               onPress={handleSave}
               activeOpacity={0.85}
             >
-              <Check size={16} color={THEME.colors.textInverse} />
+              <Check size={16} color="#09090b" />
               <Text style={styles.saveBtnText}>
                 {isEditing ? 'Save Changes' : 'Create Card'}
               </Text>
@@ -260,48 +225,59 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.45)',
+    backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: THEME.spacing.lg,
+    padding: 16,
   },
   modalContent: {
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 480,
     maxHeight: '90%',
-    backgroundColor: THEME.colors.surface,
-    borderRadius: THEME.radius.xl,
+    backgroundColor: THEME.colors.creamSurface,
+    borderRadius: 26,
+    borderWidth: 2.5,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 8,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-    ...THEME.shadows.card,
   },
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: THEME.spacing.xl,
-    borderBottomWidth: 1,
-    borderBottomColor: THEME.colors.surfaceSubtle,
+    padding: 18,
+    borderBottomWidth: 2,
+    borderBottomColor: '#09090b',
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   modalTitle: {
-    fontSize: THEME.typography.sizes.lg,
-    fontWeight: THEME.typography.weights.bold,
-    color: THEME.colors.textPrimary,
+    fontSize: 18,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   modalSubtitle: {
-    fontSize: THEME.typography.sizes.xs,
+    fontSize: 12,
     color: THEME.colors.textMuted,
+    fontWeight: THEME.typography.weights.medium,
     marginTop: 2,
   },
   closeBtn: {
-    padding: 6,
-    borderRadius: THEME.radius.sm,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   scrollBody: {
-    padding: THEME.spacing.xl,
-    gap: 16,
+    padding: 18,
+    gap: 14,
   },
   errorBox: {
     flexDirection: 'row',
@@ -309,123 +285,90 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 10,
     borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.dangerLight,
+    backgroundColor: '#ffe4e6',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
   },
   errorText: {
-    fontSize: THEME.typography.sizes.xs,
-    color: THEME.colors.danger,
-    fontWeight: THEME.typography.weights.medium,
+    fontSize: 12,
+    color: THEME.colors.punchCoral,
+    fontWeight: THEME.typography.weights.bold,
     flex: 1,
   },
   inputGroup: {
     gap: 6,
   },
-  labelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
   label: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textPrimary,
-  },
-  requiredAsterisk: {
-    color: THEME.colors.danger,
-    fontWeight: THEME.typography.weights.bold,
+    fontSize: 13,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
   textInput: {
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-    borderRadius: THEME.radius.md,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    fontSize: THEME.typography.sizes.md,
-    color: THEME.colors.textPrimary,
-    backgroundColor: THEME.colors.background,
+    fontSize: 14,
+    color: '#09090b',
+    backgroundColor: '#ffffff',
+    fontWeight: THEME.typography.weights.medium,
   },
   textArea: {
-    minHeight: 80,
+    minHeight: 70,
     textAlignVertical: 'top',
-  },
-  categorySuggestions: {
-    marginTop: 6,
-    gap: 6,
-  },
-  suggestionTitle: {
-    fontSize: THEME.typography.sizes.xs,
-    color: THEME.colors.textMuted,
   },
   chipsWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
+    marginTop: 4,
   },
   categoryChip: {
-    paddingVertical: 4,
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: THEME.radius.pill,
-    backgroundColor: THEME.colors.surfaceSubtle,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
   },
   categoryChipActive: {
-    backgroundColor: THEME.colors.primaryLight,
-    borderColor: THEME.colors.primaryBorder,
+    backgroundColor: THEME.colors.neonLime,
   },
   categoryChipText: {
-    fontSize: THEME.typography.sizes.xs,
-    color: THEME.colors.textSecondary,
+    fontSize: 11,
+    color: '#09090b',
+    fontWeight: THEME.typography.weights.bold,
   },
   categoryChipTextActive: {
-    color: THEME.colors.primary,
-    fontWeight: THEME.typography.weights.bold,
-  },
-  difficultyRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  difficultyBtn: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surfaceSubtle,
-    borderWidth: 1,
-    borderColor: THEME.colors.border,
-  },
-  difficultyBtnActive: {
-    backgroundColor: THEME.colors.primaryLight,
-    borderColor: THEME.colors.primary,
-  },
-  difficultyBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.medium,
-    color: THEME.colors.textSecondary,
-  },
-  difficultyBtnTextActive: {
-    color: THEME.colors.primary,
-    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
   modalFooter: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 10,
-    padding: THEME.spacing.lg,
-    borderTopWidth: 1,
-    borderTopColor: THEME.colors.surfaceSubtle,
-    backgroundColor: THEME.colors.surface,
+    padding: 16,
+    borderTopWidth: 2,
+    borderTopColor: '#09090b',
+    backgroundColor: THEME.colors.surfaceSubtle,
   },
   cancelBtn: {
     paddingVertical: 10,
     paddingHorizontal: 16,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.surfaceSubtle,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 1.5,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
   },
   cancelBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.medium,
-    color: THEME.colors.textSecondary,
+    fontSize: 13,
+    fontWeight: THEME.typography.weights.bold,
+    color: '#09090b',
   },
   saveBtn: {
     flexDirection: 'row',
@@ -433,13 +376,19 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: THEME.radius.md,
-    backgroundColor: THEME.colors.primary,
-    ...THEME.shadows.button,
+    borderRadius: THEME.radius.full,
+    backgroundColor: THEME.colors.neonLime,
+    borderWidth: 2,
+    borderColor: '#09090b',
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 3,
   },
   saveBtnText: {
-    fontSize: THEME.typography.sizes.sm,
-    fontWeight: THEME.typography.weights.semibold,
-    color: THEME.colors.textInverse,
+    fontSize: 13,
+    fontWeight: THEME.typography.weights.extrabold,
+    color: '#09090b',
   },
 });

@@ -1,68 +1,55 @@
+// Pop Cartoon Quiz Design System Tokens (Stitch Design Specification)
+
 export const THEME = {
   colors: {
-    // Primary brand accents
-    primary: '#4F46E5', // Indigo-600
-    primaryLight: '#EEF2FF', // Indigo-50
-    primaryHover: '#4338CA',
-    primaryBorder: '#C7D2FE',
+    // Canvas & Surfaces
+    background: '#fcfae6', // Warm Cream
+    creamSurface: '#fefce8',
+    surface: '#fcfae6',
+    surfaceSubtle: '#f0efdb',
+    surfaceVariant: '#e5e3d0',
+    whitePure: '#ffffff',
+    pitchBlack: '#09090b',
+    inkDark: '#18181b',
 
-    // Secondary / Answer Accent
-    secondary: '#0D9488', // Teal-600
-    secondaryLight: '#F0FDFA',
-    secondaryBorder: '#99F6E4',
+    // Core Brand Clash
+    primary: '#416900',
+    primaryLight: '#f4fce3',
+    primaryContainer: '#84cc16', // Electric Lime
+    primaryBorder: '#09090b',
+    neonLime: '#a3e635', // Vibrant Highlight
+    secondary: '#5220e5', // Electric Purple
+    secondaryLight: '#ede9fe',
+    secondaryContainer: '#6b45fe',
+    secondaryBorder: '#09090b',
+    electricPurple: '#7c3aed',
 
-    // Neutrals & Surfaces
-    background: '#F8FAFC', // Slate-50
-    surface: '#FFFFFF',
-    surfaceSubtle: '#F1F5F9', // Slate-100
-    border: '#E2E8F0', // Slate-200
-    borderFocus: '#94A3B8',
+    // Accents & Ratings
+    tertiaryFixed: '#ffe083', // Sunny Yellow Pill
+    tertiaryYellow: '#facc15',
+    warning: '#f59e0b',
+    warningLight: '#fef3c7',
+    punchCoral: '#f43f5e', // Potato Brain / Error
+    danger: '#f43f5e',
+    dangerLight: '#ffe4e6',
+    skyBlue: '#3b82f6',
+    outline: '#727a64',
+    outlineVariant: '#c1cab0',
+    border: '#09090b',
 
-    // Text & Hierarchy
-    textPrimary: '#0F172A', // Slate-900
-    textSecondary: '#475569', // Slate-600
-    textMuted: '#94A3B8', // Slate-400
-    textInverse: '#FFFFFF',
-
-    // Status & Feedback
-    success: '#10B981',
-    successLight: '#ECFDF5',
-    warning: '#F59E0B',
-    warningLight: '#FFFBEB',
-    danger: '#EF4444',
-    dangerLight: '#FEF2F2',
-
-    // Card Specific
-    questionCardBg: '#FFFFFF',
-    answerCardBg: '#F8FAFC',
-    cardShadow: 'rgba(15, 23, 42, 0.08)',
-  },
-
-  typography: {
-    fontFamily: {
-      sans: 'System',
-    },
-    sizes: {
-      xs: 11,
-      sm: 13,
-      md: 15,
-      lg: 18,
-      xl: 22,
-      xxl: 28,
-    },
-    weights: {
-      regular: '400' as const,
-      medium: '500' as const,
-      semibold: '600' as const,
-      bold: '700' as const,
-    },
+    // Text Hierarchy
+    textPrimary: '#09090b',
+    textSecondary: '#424936',
+    textMuted: '#727a64',
+    textInverse: '#ffffff',
   },
 
   radius: {
     sm: 8,
-    md: 12,
-    lg: 16,
-    xl: 24,
+    md: 14,
+    lg: 20,
+    xl: 28,
+    full: 9999,
     pill: 9999,
   },
 
@@ -76,20 +63,86 @@ export const THEME = {
     hero: 32,
   },
 
+  borders: {
+    thin: 1.5,
+    standard: 2,
+    thick: 2.5,
+    heavy: 3.5,
+  },
+
   shadows: {
     card: {
-      shadowColor: '#0F172A',
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.08,
-      shadowRadius: 16,
+      shadowColor: '#09090b',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
       elevation: 4,
     },
     button: {
-      shadowColor: '#4F46E5',
+      shadowColor: '#09090b',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 4,
+    },
+  },
+
+  // Neo-Brutalist Hard Extrusions
+  extrusions: {
+    sm: {
+      borderWidth: 2,
+      borderColor: '#09090b',
+      shadowColor: '#09090b',
       shadowOffset: { width: 0, height: 3 },
-      shadowOpacity: 0.2,
-      shadowRadius: 6,
-      elevation: 2,
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 3,
+    },
+    md: {
+      borderWidth: 2,
+      borderColor: '#09090b',
+      shadowColor: '#09090b',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 4,
+    },
+    lg: {
+      borderWidth: 2,
+      borderColor: '#09090b',
+      shadowColor: '#09090b',
+      shadowOffset: { width: 0, height: 5 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 5,
+    },
+    card: {
+      borderWidth: 2.5,
+      borderColor: '#09090b',
+      shadowColor: '#09090b',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 1,
+      shadowRadius: 0,
+      elevation: 8,
+    },
+  },
+
+  typography: {
+    sizes: {
+      xs: 11,
+      sm: 13,
+      md: 15,
+      lg: 18,
+      xl: 22,
+      xxl: 28,
+      hero: 32,
+    },
+    weights: {
+      regular: '400' as const,
+      medium: '500' as const,
+      semibold: '600' as const,
+      bold: '700' as const,
+      extrabold: '800' as const,
     },
   },
 };
