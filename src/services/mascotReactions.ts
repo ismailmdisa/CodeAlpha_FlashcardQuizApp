@@ -13,31 +13,31 @@ const NAILED_IT_REACTIONS: MascotReaction[] = [
   {
     emoji: '🧠⚡',
     title: 'GIGABRAIN MOMENT!',
-    comment: 'আইনস্টাইনও গোপনে খাতা বের করে নোট নিচ্ছে! Flex on them! 💪',
+    comment: 'Einstein is secretly taking notes right now! Flex on them! 💪',
     mood: 'hype',
   },
   {
     emoji: '🚀',
     title: 'NASA WANTS YOUR LOCATION',
-    comment: 'একদম স্পট অন! ব্রেন সেলগুলো যেন অপটিকাল ফাইবারে দৌড়াচ্ছে!',
+    comment: 'Spot on! Brain cells firing at fiber-optic speed! 🚀',
     mood: 'hype',
   },
   {
     emoji: '👑',
     title: 'PURE DOMINANCE',
-    comment: 'কার্ডটা আপনাকে টেস্ট করতে আসছিল, উল্টা নিজেই ভয় পেয়ে গেছে!',
+    comment: 'The flashcard came to test you, but ended up terrified! 👑',
     mood: 'hype',
   },
   {
     emoji: '🔥',
     title: 'UNSTOPPABLE!',
-    comment: 'এত ফাস্ট অ্যানসার? ব্রেনে কি কোনো গোপন ক্যাশ মেমোরি লাগানো?!',
+    comment: 'Instant recall! Did you install a secret cache memory in your head?! ⚡',
     mood: 'fire',
   },
   {
     emoji: '💎',
     title: 'FLAWLESS RECALL',
-    comment: '১০ এ ১০! আজ পরীক্ষার হলে গেলে পেপার নিজেই লিখে আসত!',
+    comment: '10 out of 10! You could walk into an exam and ace it blindfolded! 💎',
     mood: 'hype',
   },
 ];
@@ -46,25 +46,25 @@ const KINDA_KNEW_REACTIONS: MascotReaction[] = [
   {
     emoji: '🤔',
     title: 'HALF BRAINCELL ACTIVE',
-    comment: 'জিহ্বার ডগায় ছিল কিন্তু মনে পড়তেছিল না তাইতো? পরের বার একদম মুখস্থ!',
+    comment: "Right on the tip of your tongue, wasn't it? Next time you will own it! 🤔",
     mood: 'chill',
   },
   {
     emoji: '🔋',
     title: '50% BATTERY SAVER',
-    comment: 'কিছুটা মনে ছিল, কিছুটা বানিয়ে ফেলতে চেয়েছিলা! চলো আরেকটু রিভিশন দিই।',
+    comment: "Part memory, part wild guess! Let's review this one more time! 🔋",
     mood: 'chill',
   },
   {
     emoji: '☕',
     title: 'NEED MORE COFFEE?',
-    comment: 'স্মৃতিশক্তি ৮৫% লোডিং হয়েছিল, আরেকটু পুশ করলেই কেল্লাফতে!',
+    comment: "Memory loaded at 85%! One quick push and it's permanently locked in! ☕",
     mood: 'chill',
   },
   {
     emoji: '🎯',
     title: 'CLOSE ENOUGH!',
-    comment: 'তীর নিশানা ছুঁয়ে গেছে, পরের রাউন্ডে একদম বুলসআই লাগবে!',
+    comment: 'You skimmed the bullseye! Next round will be dead center! 🎯',
     mood: 'chill',
   },
 ];
@@ -73,31 +73,31 @@ const BLANKED_REACTIONS: MascotReaction[] = [
   {
     emoji: '💀',
     title: 'ERROR 404: BRAIN NOT FOUND',
-    comment: 'ফ্রন্টাল কর্টেক্সে কি ওয়াইফাই ক্যাবল ছুটে গেছে নাকি? 🔌 কোনো চাপ নাই, মুখস্থ করে নাও!',
+    comment: 'Did someone unplug the Wi-Fi cable in your frontal cortex? 🔌 No worries, lock it in now!',
     mood: 'roast',
   },
   {
     emoji: '🗿',
     title: 'CARD IS JUDGING SILENTLY',
-    comment: 'কার্ডটা আপনার দিকে নিস্তব্ধভাবে তাকিয়ে আছে... লজ্জা পেয়ে আবার পড়ে নাও!',
+    comment: 'The card is staring into your soul... study up and get revenge! 🗿',
     mood: 'roast',
   },
   {
     emoji: '🫠',
     title: 'BRAIN WENT TO SLEEP',
-    comment: 'অ্যানসার দেখে মনে হচ্ছে: "আরে এটা তো আমি জীবনেও শুনি নাই!" 😂',
+    comment: 'Looking at the answer like: "I have never seen this in my entire life!" 😂',
     mood: 'roast',
   },
   {
     emoji: '🧘‍♂️',
     title: 'MEDITATION MODE',
-    comment: 'মাথা পুরো খালি—একদম বৌদ্ধ সন্ন্যাসীর মতো শূন্য! চলো আরেকবার পড়ি!',
+    comment: "Head completely empty—peaceful like a Buddhist monk! Let's read it again! 🧘‍♂️",
     mood: 'roast',
   },
   {
     emoji: '🕵️‍♂️',
     title: 'SEARCH PARTY SENT',
-    comment: 'আপনার মেমোরি খোঁজার জন্য বিশেষ টিম পাঠানো হয়েছে... উত্তরটা দেখে নাও!',
+    comment: 'A rescue team was dispatched to find that memory... peek the answer! 🕵️‍♂️',
     mood: 'roast',
   },
 ];
@@ -106,19 +106,19 @@ const COMBO_STREAK_REACTIONS: MascotReaction[] = [
   {
     emoji: '🔥⚡',
     title: 'ON FIRE STREAK!',
-    comment: 'টানা সঠিক উত্তর! ব্রেনে আগুন ধরে গেছে, ফায়ার সার্ভিস ডাকো! 🚒',
+    comment: 'Consecutive correct answers! Call the fire department, brain is smoking! 🚒',
     mood: 'fire',
   },
   {
     emoji: '☄️',
     title: 'METEORIC STREAK!',
-    comment: 'সব অ্যানসার একদম পানির মতো ক্লিয়ার! আনস্টপাবল মোড অন!',
+    comment: 'Crystal clear recall! Unstoppable study machine activated! ☄️',
     mood: 'fire',
   },
   {
     emoji: '🌌',
     title: 'GALAXY BRAIN ACTIVATED',
-    comment: 'মহাজাগতিক লেভেলের ফোকাস! কোনো কার্ড আপনাকে থামাতে পারবে না!',
+    comment: 'Cosmic level focus! No flashcard in the universe can stop you! 🌌',
     mood: 'fire',
   },
 ];

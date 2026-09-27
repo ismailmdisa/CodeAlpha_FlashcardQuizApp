@@ -56,7 +56,7 @@ export const GamificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [latestReaction, setLatestReaction] = useState<MascotReaction | null>({
     emoji: '👋🧠',
     title: 'BRAINY IS READY TO ROLL!',
-    comment: 'আজকে কয়টা কার্ড পড়বা? চলো Procrastination Demon কে পিটিয়ে বিদায় করি!',
+    comment: "Ready to study? Let's defeat the Procrastination Demon today! ⚡",
     mood: 'hype',
   });
   const [showConfetti, setShowConfetti] = useState<boolean>(false);
