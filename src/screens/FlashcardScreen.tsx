@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Plus, BookOpen, Sparkles } from 'lucide-react-native';
 import { useFlashcards } from '../context/FlashcardContext';
+import { useGamification } from '../context/GamificationContext';
 import { THEME } from '../theme/flashcardTheme';
 import { FlashcardViewer } from '../components/FlashcardViewer';
 import { QuizControls } from '../components/QuizControls';
@@ -20,7 +21,15 @@ import { AddEditCardModal } from '../components/AddEditCardModal';
 import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
 import { CardListModal } from '../components/CardListModal';
 import { QuizSummaryModal } from '../components/QuizSummaryModal';
+import { ComboMeter } from '../components/ComboMeter';
+import { MascotBanner } from '../components/MascotBanner';
+import { ModeSelector } from '../components/ModeSelector';
+import { RecallActionButtons } from '../components/RecallActionButtons';
+import { BossBattleBar } from '../components/BossBattleBar';
+import { SpeedRunTimer } from '../components/SpeedRunTimer';
+import { ConfettiExplosion } from '../components/ConfettiExplosion';
 import { Flashcard } from '../types/flashcard';
+import { soundFx } from '../services/soundFx';
 
 export const FlashcardScreen: React.FC = () => {
   const {
@@ -34,6 +43,7 @@ export const FlashcardScreen: React.FC = () => {
     isLoading,
 
     toggleFlip,
+    showAnswer,
     nextCard,
     prevCard,
     goToCard,
@@ -56,14 +66,37 @@ export const FlashcardScreen: React.FC = () => {
     setIsSummaryModalOpen,
   } = useFlashcards();
 
+  const {
+    quizMode,
+    soundEnabled,
+    latestReaction,
+    showConfetti,
+    recordRecallResult,
+    clearReaction,
+  } = useGamification();
+
   const [deletingCard, setDeletingCard] = useState<Flashcard | null>(null);
+
+  // Play sound on flip
+  const handleToggleFlip = () => {
+    if (soundEnabled) soundFx.playFlip();
+    toggleFlip();
+  };
+
+  // When rating a card (Blanked / Kinda / Nailed It)
+  const handleRateRecall = (rating: 'NAILED_IT' | 'KINDA_KNEW' | 'BLANKED') => {
+    recordRecallResult(rating);
+    // Smoothly auto-advance to next card after 1.2s delay or keep active
+    setTimeout(() => {
+      nextCard();
+    }, 1200);
+  };
 
   // Keyboard navigation for Desktop Web
   useEffect(() => {
     if (Platform.OS !== 'web' || typeof window === 'undefined') return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts if an input/textarea is focused or modal is open
       const activeTag = document.activeElement?.tagName?.toLowerCase();
       if (activeTag === 'input' || activeTag === 'textarea') return;
       if (isAddModalOpen || editingCard || isManageModalOpen || deletingCard) return;
@@ -76,7 +109,19 @@ export const FlashcardScreen: React.FC = () => {
         prevCard();
       } else if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        toggleFlip();
+        handleToggleFlip();
+      } else if (isFlipped) {
+        // Numeric recall shortcuts on Web: 1=Blanked, 2=Kinda, 3=Nailed It
+        if (e.key === '1') {
+          e.preventDefault();
+          handleRateRecall('BLANKED');
+        } else if (e.key === '2') {
+          e.preventDefault();
+          handleRateRecall('KINDA_KNEW');
+        } else if (e.key === '3') {
+          e.preventDefault();
+          handleRateRecall('NAILED_IT');
+        }
       }
     };
 
@@ -85,7 +130,7 @@ export const FlashcardScreen: React.FC = () => {
   }, [
     nextCard,
     prevCard,
-    toggleFlip,
+    isFlipped,
     isAddModalOpen,
     editingCard,
     isManageModalOpen,
@@ -110,6 +155,10 @@ export const FlashcardScreen: React.FC = () => {
         barStyle="dark-content"
         backgroundColor={THEME.colors.background}
       />
+
+      {/* Confetti Explosion Burst */}
+      {showConfetti && <ConfettiExplosion />}
+
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -125,6 +174,34 @@ export const FlashcardScreen: React.FC = () => {
           onOpenManageModal={() => setIsManageModalOpen(true)}
         />
 
+        {/* Gamified Combo, Level & Sound Meter */}
+        <ComboMeter />
+
+        {/* Study Mode Selector (Chill / Speed Run / Boss Battle) */}
+        <ModeSelector />
+
+        {/* Speed Run Countdown Timer */}
+        {quizMode === 'SPEED_RUN' && (
+          <SpeedRunTimer
+            cardIndex={currentIndex}
+            isFlipped={isFlipped}
+            soundEnabled={soundEnabled}
+            onTimeUp={() => {
+              showAnswer();
+              recordRecallResult('BLANKED');
+            }}
+          />
+        )}
+
+        {/* Boss Battle Bar */}
+        {quizMode === 'BOSS_BATTLE' && <BossBattleBar />}
+
+        {/* Mascot Roast & Praise Banner */}
+        <MascotBanner
+          reaction={latestReaction}
+          onDismiss={clearReaction}
+        />
+
         {/* Main Flashcard Arena */}
         {filteredCards.length > 0 && currentCard ? (
           <View style={styles.studyArena}>
@@ -132,18 +209,23 @@ export const FlashcardScreen: React.FC = () => {
             <FlashcardViewer
               card={currentCard}
               isFlipped={isFlipped}
-              onToggleFlip={toggleFlip}
+              onToggleFlip={handleToggleFlip}
               onEdit={(card) => setEditingCard(card)}
               onDelete={(card) => setDeletingCard(card)}
               cardNumber={currentIndex + 1}
               totalCards={filteredCards.length}
             />
 
+            {/* Active Recall Buttons shown when answer is revealed */}
+            {isFlipped && (
+              <RecallActionButtons onRate={handleRateRecall} />
+            )}
+
             {/* Navigation & Answer Controls */}
             <QuizControls
               onPrev={prevCard}
               onNext={nextCard}
-              onToggleFlip={toggleFlip}
+              onToggleFlip={handleToggleFlip}
               onShuffle={shuffleDeck}
               onReset={restartQuiz}
               isFlipped={isFlipped}

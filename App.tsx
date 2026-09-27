@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { FlashcardProvider } from './src/context/FlashcardContext';
+import { GamificationProvider } from './src/context/GamificationContext';
 import { FlashcardScreen } from './src/screens/FlashcardScreen';
 import { THEME } from './src/theme/flashcardTheme';
 
@@ -11,9 +12,11 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.root}>
         <StatusBar style="dark" />
-        <FlashcardProvider>
-          <FlashcardScreen />
-        </FlashcardProvider>
+        <GamificationProvider>
+          <FlashcardProvider>
+            <FlashcardScreen />
+          </FlashcardProvider>
+        </GamificationProvider>
       </View>
     </SafeAreaProvider>
   );
