@@ -41,6 +41,16 @@ class SoundEffectsService {
     }
   }
 
+  // Snappy button click
+  playClick() {
+    this.playFlip();
+  }
+
+  // Success / celebration trigger
+  playSuccess() {
+    this.playCorrect();
+  }
+
   // Nailed It / Easy Correct (Crisp 8-Bit Mario Coin Tone)
   playCorrect() {
     const ctx = this.getAudioContext();

@@ -8,6 +8,7 @@ import {
   Volume2,
   VolumeX,
   RotateCcw,
+  ArrowLeft,
 } from 'lucide-react-native';
 import Svg, { Ellipse, Circle, Path } from 'react-native-svg';
 import { THEME } from '../theme/flashcardTheme';
@@ -21,6 +22,7 @@ interface PopHeaderProps {
   onOpenAddModal: () => void;
   onOpenLibrary: () => void;
   onRestartDeck: () => void;
+  onBackToDashboard?: () => void;
 }
 
 export const PopHeader: React.FC<PopHeaderProps> = ({
@@ -32,6 +34,7 @@ export const PopHeader: React.FC<PopHeaderProps> = ({
   onOpenAddModal,
   onOpenLibrary,
   onRestartDeck,
+  onBackToDashboard,
 }) => {
   // Generate up to 5 progress dots
   const maxDots = Math.min(5, Math.max(totalCards, 1));
@@ -41,8 +44,19 @@ export const PopHeader: React.FC<PopHeaderProps> = ({
     <View style={styles.container}>
       {/* Top Navbar */}
       <View style={styles.topNavbar}>
-        {/* Left: Mini Mascot Avatar & Title */}
+        {/* Left: Back button or Mini Mascot Avatar & Title */}
         <View style={styles.brandRow}>
+          {onBackToDashboard && (
+            <TouchableOpacity
+              style={styles.backBtn}
+              onPress={onBackToDashboard}
+              aria-label="Back to Dashboard"
+              activeOpacity={0.7}
+            >
+              <ArrowLeft size={18} color="#09090b" />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             style={styles.miniMascotBadge}
             onPress={onRestartDeck}
@@ -156,6 +170,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  backBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: THEME.radius.full,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: '#09090b',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 2,
+    shadowColor: '#09090b',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 0,
+    elevation: 2,
   },
   miniMascotBadge: {
     width: 38,

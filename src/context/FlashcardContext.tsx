@@ -39,6 +39,8 @@ interface FlashcardContextType {
   setIsManageModalOpen: (open: boolean) => void;
   isSummaryModalOpen: boolean;
   setIsSummaryModalOpen: (open: boolean) => void;
+  deletingCard: Flashcard | null;
+  setDeletingCard: (card: Flashcard | null) => void;
 }
 
 const FlashcardContext = createContext<FlashcardContextType | undefined>(undefined);
@@ -53,6 +55,7 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   // Modals
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [editingCard, setEditingCard] = useState<Flashcard | null>(null);
+  const [deletingCard, setDeletingCard] = useState<Flashcard | null>(null);
   const [isManageModalOpen, setIsManageModalOpen] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
 
@@ -269,6 +272,8 @@ export const FlashcardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsManageModalOpen,
         isSummaryModalOpen,
         setIsSummaryModalOpen,
+        deletingCard,
+        setDeletingCard,
       }}
     >
       {children}

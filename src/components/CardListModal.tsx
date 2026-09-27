@@ -90,6 +90,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
             <TouchableOpacity
               onPress={onClose}
               style={styles.closeBtn}
+              aria-label="Close modal"
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
               <X size={18} color="#09090b" />

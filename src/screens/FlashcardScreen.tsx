@@ -19,15 +19,16 @@ import { MascotCharacter } from '../components/MascotCharacter';
 import { PopFlashcardViewer } from '../components/PopFlashcardViewer';
 import { PopQuizControls } from '../components/PopQuizControls';
 import { PopRoundWinModal } from '../components/PopRoundWinModal';
-import { AddEditCardModal } from '../components/AddEditCardModal';
-import { DeleteConfirmModal } from '../components/DeleteConfirmModal';
-import { CardListModal } from '../components/CardListModal';
 import { ConfettiExplosion } from '../components/ConfettiExplosion';
 import { Flashcard } from '../types/flashcard';
 import { soundFx } from '../services/soundFx';
 import { MasteryRating } from '../services/mascotReactions';
 
-export const FlashcardScreen: React.FC = () => {
+interface FlashcardScreenProps {
+  onBackToDashboard?: () => void;
+}
+
+export const FlashcardScreen: React.FC<FlashcardScreenProps> = ({ onBackToDashboard }) => {
   const {
     cards,
     filteredCards,
@@ -57,6 +58,8 @@ export const FlashcardScreen: React.FC = () => {
     setIsManageModalOpen,
     isSummaryModalOpen,
     setIsSummaryModalOpen,
+    deletingCard,
+    setDeletingCard,
   } = useFlashcards();
 
   const {
@@ -69,8 +72,6 @@ export const FlashcardScreen: React.FC = () => {
     recordRecallResult,
     toggleSound,
   } = useGamification();
-
-  const [deletingCard, setDeletingCard] = useState<Flashcard | null>(null);
 
   // Play sound on flip
   const handleToggleFlip = () => {
@@ -174,6 +175,7 @@ export const FlashcardScreen: React.FC = () => {
           onOpenAddModal={() => setIsAddModalOpen(true)}
           onOpenLibrary={() => setIsManageModalOpen(true)}
           onRestartDeck={restartQuiz}
+          onBackToDashboard={onBackToDashboard}
         />
 
         {/* Living Mascot Character Stage */}
@@ -228,67 +230,6 @@ export const FlashcardScreen: React.FC = () => {
           </View>
         )}
       </ScrollView>
-
-      {/* Add Card Modal */}
-      <AddEditCardModal
-        visible={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSave={async (data) => {
-          await addCard(data);
-        }}
-        initialCard={null}
-        existingCategories={categories}
-      />
-
-      {/* Edit Card Modal */}
-      <AddEditCardModal
-        visible={!!editingCard}
-        onClose={() => setEditingCard(null)}
-        onSave={async (data) => {
-          if (editingCard) {
-            await updateCard(editingCard.id, data);
-            setEditingCard(null);
-          }
-        }}
-        initialCard={editingCard}
-        existingCategories={categories}
-      />
-
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmModal
-        visible={!!deletingCard}
-        card={deletingCard}
-        onClose={() => setDeletingCard(null)}
-        onConfirm={async () => {
-          if (deletingCard) {
-            await deleteCard(deletingCard.id);
-            setDeletingCard(null);
-          }
-        }}
-      />
-
-      {/* Card Library Modal */}
-      <CardListModal
-        visible={isManageModalOpen}
-        cards={cards}
-        onClose={() => setIsManageModalOpen(false)}
-        onSelectCard={(index) => {
-          goToCard(index);
-        }}
-        onEditCard={(card) => {
-          setIsManageModalOpen(false);
-          setEditingCard(card);
-        }}
-        onDeleteCard={(card) => {
-          setDeletingCard(card);
-        }}
-        onAddNew={() => {
-          setIsAddModalOpen(true);
-        }}
-        onResetDefaults={async () => {
-          await resetToDefaultDeck();
-        }}
-      />
 
       {/* Round Win Celebration Modal */}
       <PopRoundWinModal

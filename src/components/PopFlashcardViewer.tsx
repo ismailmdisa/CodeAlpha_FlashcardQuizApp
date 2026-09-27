@@ -178,6 +178,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             activeOpacity={0.9}
+            aria-label="Tap to peek answer"
           >
             <Eye size={20} color={THEME.colors.neonLime} />
             <Text style={styles.peekButtonText}>TAP TO PEEK ANSWER!</Text>
@@ -250,6 +251,7 @@ export const PopFlashcardViewer: React.FC<PopFlashcardViewerProps> = ({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
             activeOpacity={0.9}
+            aria-label="Hide answer"
           >
             <EyeOff size={20} color="#09090b" />
             <Text style={[styles.peekButtonText, styles.hideButtonText]}>

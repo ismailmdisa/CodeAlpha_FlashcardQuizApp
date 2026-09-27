@@ -1,11 +1,140 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { FlashcardProvider } from './src/context/FlashcardContext';
+import { FlashcardProvider, useFlashcards } from './src/context/FlashcardContext';
 import { GamificationProvider } from './src/context/GamificationContext';
+import { DashboardScreen } from './src/screens/DashboardScreen';
 import { FlashcardScreen } from './src/screens/FlashcardScreen';
+import { AddEditCardModal } from './src/components/AddEditCardModal';
+import { DeleteConfirmModal } from './src/components/DeleteConfirmModal';
+import { CardListModal } from './src/components/CardListModal';
 import { THEME } from './src/theme/flashcardTheme';
+
+function AppNavigator() {
+  const [currentScreen, setCurrentScreen] = useState<'dashboard' | 'quiz'>('dashboard');
+
+  const {
+    cards,
+    categories,
+    goToCard,
+    shuffleDeck,
+    restartQuiz,
+    addCard,
+    updateCard,
+    deleteCard,
+    resetToDefaultDeck,
+    isAddModalOpen,
+    setIsAddModalOpen,
+    editingCard,
+    setEditingCard,
+    isManageModalOpen,
+    setIsManageModalOpen,
+    deletingCard,
+    setDeletingCard,
+  } = useFlashcards();
+
+  const handleStartQuiz = (mode: string) => {
+    if (mode === 'random') {
+      shuffleDeck();
+    } else {
+      restartQuiz();
+    }
+    setCurrentScreen('quiz');
+  };
+
+  const handleOpenLibrary = () => {
+    setIsManageModalOpen(true);
+  };
+
+  const handleOpenAddCard = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentScreen('dashboard');
+  };
+
+  return (
+    <View style={styles.root}>
+      {/* Dynamic Screen View */}
+      {currentScreen === 'dashboard' ? (
+        <DashboardScreen
+          onStartQuiz={handleStartQuiz}
+          onOpenLibrary={handleOpenLibrary}
+          onOpenAddCard={handleOpenAddCard}
+        />
+      ) : (
+        <FlashcardScreen onBackToDashboard={handleBackToDashboard} />
+      )}
+
+      {/* Global Modals accessible across both screens */}
+      {/* 1. Add New Card Modal */}
+      <AddEditCardModal
+        visible={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={async (data) => {
+          await addCard(data);
+          setIsAddModalOpen(false);
+        }}
+        initialCard={null}
+        existingCategories={categories}
+      />
+
+      {/* 2. Edit Existing Card Modal */}
+      <AddEditCardModal
+        visible={!!editingCard}
+        onClose={() => setEditingCard(null)}
+        onSave={async (data) => {
+          if (editingCard) {
+            await updateCard(editingCard.id, data);
+            setEditingCard(null);
+          }
+        }}
+        initialCard={editingCard}
+        existingCategories={categories}
+      />
+
+      {/* 3. Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        visible={!!deletingCard}
+        card={deletingCard}
+        onClose={() => setDeletingCard(null)}
+        onConfirm={async () => {
+          if (deletingCard) {
+            await deleteCard(deletingCard.id);
+            setDeletingCard(null);
+          }
+        }}
+      />
+
+      {/* 4. Decks & Card Management Modal */}
+      <CardListModal
+        visible={isManageModalOpen}
+        cards={cards}
+        onClose={() => setIsManageModalOpen(false)}
+        onSelectCard={(index) => {
+          goToCard(index);
+          setIsManageModalOpen(false);
+          setCurrentScreen('quiz');
+        }}
+        onEditCard={(card) => {
+          setIsManageModalOpen(false);
+          setEditingCard(card);
+        }}
+        onDeleteCard={(card) => {
+          setDeletingCard(card);
+        }}
+        onAddNew={() => {
+          setIsAddModalOpen(true);
+        }}
+        onResetDefaults={async () => {
+          await resetToDefaultDeck();
+        }}
+      />
+    </View>
+  );
+}
 
 export default function App() {
   return (
@@ -14,7 +143,7 @@ export default function App() {
         <StatusBar style="dark" />
         <GamificationProvider>
           <FlashcardProvider>
-            <FlashcardScreen />
+            <AppNavigator />
           </FlashcardProvider>
         </GamificationProvider>
       </View>
