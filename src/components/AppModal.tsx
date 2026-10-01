@@ -17,12 +17,12 @@ export const AppModal: React.FC<AppModalProps> = ({
 }) => {
   if (!visible) return null;
 
-  // On Web: avoid react-native-web portal rendering glitches by rendering a top-level fixed overlay
+  // On Web: Render strictly inside the phone viewport container with position: absolute
   if (Platform.OS === 'web') {
     return (
       <View
         style={[
-          styles.webFixedOverlay,
+          styles.webAbsoluteOverlay,
           transparent ? styles.webTransparent : styles.webOpaque,
         ]}
       >
@@ -31,7 +31,7 @@ export const AppModal: React.FC<AppModalProps> = ({
     );
   }
 
-  // On iOS / Android: use native Modal
+  // On iOS / Android Native: use native Modal
   return (
     <Modal
       visible={visible}
@@ -46,14 +46,13 @@ export const AppModal: React.FC<AppModalProps> = ({
 };
 
 const styles = StyleSheet.create({
-  webFixedOverlay: {
-    // @ts-ignore
-    position: 'fixed',
+  webAbsoluteOverlay: {
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 99999,
+    zIndex: 9999,
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -63,6 +62,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   webOpaque: {
-    backgroundColor: '#0A0A0C',
+    backgroundColor: 'rgba(9, 9, 11, 0.65)',
   },
 });

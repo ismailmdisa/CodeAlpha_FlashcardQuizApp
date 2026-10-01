@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   Platform,
 } from 'react-native';
-import { Wifi, Battery, Sparkles } from 'lucide-react-native';
+import { Wifi, Battery } from 'lucide-react-native';
 import { THEME } from '../theme/flashcardTheme';
 
 interface MobileDeviceFrameProps {
@@ -17,13 +17,46 @@ export const MobileDeviceFrame: React.FC<MobileDeviceFrameProps> = ({ children }
   const { width, height } = useWindowDimensions();
   const [currentTime, setCurrentTime] = useState<string>('9:41');
 
+  // Inject global CSS to eliminate browser scrollbars and web quirks
+  useEffect(() => {
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      const styleId = 'mobile-device-global-styles';
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+          /* Hide ugly browser scrollbars completely inside mobile screen */
+          ::-webkit-scrollbar {
+            width: 0px !important;
+            height: 0px !important;
+            background: transparent !important;
+            display: none !important;
+          }
+          * {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+          body, html {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            background-color: #111113 !important;
+            width: 100% !important;
+            height: 100% !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+  }, []);
+
   // Keep a clean digital clock
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       let hours = now.getHours();
       const minutes = now.getMinutes();
-      // 12-hour or standard clean clock
       hours = hours % 12 || 12;
       const minStr = minutes < 10 ? `0${minutes}` : `${minutes}`;
       setCurrentTime(`${hours}:${minStr}`);
@@ -40,36 +73,23 @@ export const MobileDeviceFrame: React.FC<MobileDeviceFrameProps> = ({ children }
     return <View style={styles.nativeFullView}>{children}</View>;
   }
 
-  // Calculate dynamic device chassis dimensions
-  const frameHeight = Math.min(height - 48, 880);
-  const frameWidth = 414; // Standard modern mobile width (iPhone 16 / Pixel)
+  // Calculate dynamic device chassis dimensions - generous Pro Max size
+  const frameHeight = Math.min(height - 20, 920);
+  const frameWidth = Math.min(width - 24, 448);
 
   return (
     <View style={styles.desktopCanvas}>
-      {/* Studio Top Floating Info Bar */}
-      <View style={styles.topInfoBar}>
-        <View style={styles.infoBadge}>
-          <Sparkles size={13} color={THEME.colors.neonLime} />
-          <Text style={styles.infoBadgeText}>
-            CodeAlpha • React Native Mobile App Preview
-          </Text>
-        </View>
-        <Text style={styles.infoSubtext}>
-          📱 Running in simulated Mobile Device Frame (Auto-responsive on actual phones)
-        </Text>
-      </View>
-
-      {/* Outer Phone Shell Wrapper (Holds side buttons & 3D shadow) */}
+      {/* Outer Phone Shell Wrapper (Holds physical side buttons & realistic 3D shadow) */}
       <View style={[styles.phoneShell, { width: frameWidth, height: frameHeight }]}>
-        {/* Left Physical Buttons (Mute / Action & Volume) */}
+        {/* Left Physical Buttons (Action Button & Volume Up/Down) */}
         <View style={[styles.sideButton, styles.actionButton]} />
         <View style={[styles.sideButton, styles.volUpButton]} />
         <View style={[styles.sideButton, styles.volDownButton]} />
 
-        {/* Right Physical Button (Power / Lock) */}
+        {/* Right Physical Button (Power / Lock Button) */}
         <View style={[styles.sideButton, styles.powerButton]} />
 
-        {/* Main Phone Body (Titanium Bezel) */}
+        {/* Main Phone Body (Curved Titanium Bezel) */}
         <View style={styles.phoneBody}>
           {/* Inner Screen Container */}
           <View style={styles.screenContainer}>
@@ -100,7 +120,7 @@ export const MobileDeviceFrame: React.FC<MobileDeviceFrameProps> = ({ children }
               </View>
             </View>
 
-            {/* App Render Area */}
+            {/* App Viewport */}
             <View style={styles.appViewport}>{children}</View>
 
             {/* Bottom Home Indicator Swipe Bar */}
@@ -121,39 +141,12 @@ const styles = StyleSheet.create({
   },
   desktopCanvas: {
     flex: 1,
-    backgroundColor: '#18181b', // Ultra-sleek dark studio desk
+    backgroundColor: '#111113', // Ultra-sleek dark studio canvas
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 18,
+    paddingVertical: 10,
     position: 'relative',
     overflow: 'hidden',
-  },
-  topInfoBar: {
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  infoBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: THEME.radius.full,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-  },
-  infoBadgeText: {
-    fontSize: 11,
-    fontWeight: THEME.typography.weights.extrabold,
-    color: '#ffffff',
-    letterSpacing: 0.4,
-  },
-  infoSubtext: {
-    fontSize: 10,
-    color: '#a1a1aa',
-    marginTop: 4,
-    fontWeight: THEME.typography.weights.medium,
   },
 
   // Outer Phone Shell
@@ -163,8 +156,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 25 },
-    shadowOpacity: 0.55,
-    shadowRadius: 35,
+    shadowOpacity: 0.65,
+    shadowRadius: 40,
     elevation: 25,
   },
 
@@ -185,19 +178,19 @@ const styles = StyleSheet.create({
     left: -3,
     top: 148,
     width: 3.5,
-    height: 48,
+    height: 50,
   },
   volDownButton: {
     left: -3,
-    top: 206,
+    top: 208,
     width: 3.5,
-    height: 48,
+    height: 50,
   },
   powerButton: {
     right: -3,
     top: 160,
     width: 3.5,
-    height: 64,
+    height: 68,
   },
 
   // Phone Chassis Body
@@ -205,8 +198,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#27272a', // Titanium metal chassis
-    borderRadius: 50,
-    padding: 10, // Outer bezel thickness
+    borderRadius: 52,
+    padding: 11, // Outer bezel thickness
     borderWidth: 1.5,
     borderColor: '#52525b',
   },
@@ -215,7 +208,7 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     backgroundColor: THEME.colors.background,
-    borderRadius: 40,
+    borderRadius: 42,
     overflow: 'hidden',
     position: 'relative',
   },
@@ -228,20 +221,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
     zIndex: 50,
   },
   statusTime: {
-    fontSize: 12,
+    fontSize: 12.5,
     fontWeight: THEME.typography.weights.extrabold,
     color: '#09090b',
     width: 50,
   },
   dynamicIsland: {
-    width: 100,
-    height: 24,
+    width: 108,
+    height: 25,
     backgroundColor: '#000000',
-    borderRadius: 12,
+    borderRadius: 13,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -301,6 +294,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     position: 'relative',
+    overflow: 'hidden',
   },
 
   // Bottom Home Indicator
@@ -314,9 +308,9 @@ const styles = StyleSheet.create({
     zIndex: 50,
   },
   homeIndicatorBar: {
-    width: 124,
-    height: 4,
-    borderRadius: 2,
+    width: 130,
+    height: 4.5,
+    borderRadius: 2.5,
     backgroundColor: '#09090b',
     opacity: 0.8,
   },

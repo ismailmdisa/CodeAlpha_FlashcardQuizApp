@@ -5,11 +5,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Modal,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { AppModal } from './AppModal';
 import { X, Check, AlertCircle, Sparkles } from 'lucide-react-native';
 import { Flashcard } from '../types/flashcard';
 import { THEME } from '../theme/flashcardTheme';
@@ -77,7 +77,7 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
   };
 
   return (
-    <Modal
+    <AppModal
       visible={visible}
       transparent
       animationType="fade"
@@ -218,7 +218,7 @@ export const AddEditCardModal: React.FC<AddEditCardModalProps> = ({
           </View>
         </View>
       </KeyboardAvoidingView>
-    </Modal>
+    </AppModal>
   );
 };
 
@@ -228,14 +228,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   modalContent: {
     width: '100%',
-    maxWidth: 480,
-    maxHeight: '90%',
+    maxHeight: '92%',
     backgroundColor: THEME.colors.creamSurface,
-    borderRadius: 26,
+    borderRadius: 24,
     borderWidth: 2.5,
     borderColor: '#09090b',
     shadowColor: '#09090b',

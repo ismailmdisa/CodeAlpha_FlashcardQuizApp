@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { AppModal } from './AppModal';
 import { Trash2, AlertTriangle } from 'lucide-react-native';
 import { THEME } from '../theme/flashcardTheme';
 import { Flashcard } from '../types/flashcard';
@@ -20,7 +21,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   if (!card) return null;
 
   return (
-    <Modal
+    <AppModal
       visible={visible}
       transparent
       animationType="fade"
@@ -63,7 +64,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           </View>
         </View>
       </View>
-    </Modal>
+    </AppModal>
   );
 };
 
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   content: {
     width: '100%',

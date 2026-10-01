@@ -5,9 +5,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Modal,
   FlatList,
 } from 'react-native';
+import { AppModal } from './AppModal';
 import {
   X,
   Search,
@@ -71,7 +71,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
   }, [cards, searchQuery, filterCategory]);
 
   return (
-    <Modal
+    <AppModal
       visible={visible}
       transparent
       animationType="slide"
@@ -250,7 +250,7 @@ export const CardListModal: React.FC<CardListModalProps> = ({
           </View>
         </View>
       </View>
-    </Modal>
+    </AppModal>
   );
 };
 
@@ -260,14 +260,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   content: {
     width: '100%',
-    maxWidth: 580,
-    height: '86%',
+    height: '92%',
     backgroundColor: THEME.colors.creamSurface,
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 2.5,
     borderColor: '#09090b',
     shadowColor: '#09090b',

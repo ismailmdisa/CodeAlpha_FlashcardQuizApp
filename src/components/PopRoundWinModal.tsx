@@ -4,9 +4,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Modal,
   ScrollView,
 } from 'react-native';
+import { AppModal } from './AppModal';
 import { Award, RotateCcw, Shuffle, X, Star, Flame } from 'lucide-react-native';
 import Svg, { Ellipse, Circle, Path, G, Polygon } from 'react-native-svg';
 import { THEME } from '../theme/flashcardTheme';
@@ -31,7 +31,7 @@ export const PopRoundWinModal: React.FC<PopRoundWinModalProps> = ({
   onClose,
 }) => {
   return (
-    <Modal
+    <AppModal
       visible={visible}
       transparent
       animationType="fade"
@@ -171,7 +171,7 @@ export const PopRoundWinModal: React.FC<PopRoundWinModalProps> = ({
           </ScrollView>
         </View>
       </View>
-    </Modal>
+    </AppModal>
   );
 };
 
@@ -181,14 +181,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   modalCard: {
     width: '100%',
-    maxWidth: 440,
     maxHeight: '92%',
     backgroundColor: THEME.colors.creamSurface,
-    borderRadius: 30,
+    borderRadius: 24,
     borderWidth: 2.5,
     borderColor: '#09090b',
     shadowColor: '#09090b',

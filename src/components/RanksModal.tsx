@@ -3,10 +3,10 @@ import {
   StyleSheet,
   View,
   Text,
-  Modal,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { AppModal } from './AppModal';
 import {
   X,
   Trophy,
@@ -172,7 +172,7 @@ export const RanksModal: React.FC<RanksModalProps> = ({ visible, onClose }) => {
   };
 
   return (
-    <Modal
+    <AppModal
       visible={visible}
       transparent
       animationType="slide"
@@ -434,7 +434,7 @@ export const RanksModal: React.FC<RanksModalProps> = ({ visible, onClose }) => {
           </View>
         </View>
       </View>
-    </Modal>
+    </AppModal>
   );
 };
 
@@ -444,14 +444,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(9, 9, 11, 0.65)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 10,
   },
   content: {
     width: '100%',
-    maxWidth: 540,
-    height: '88%',
+    height: '92%',
     backgroundColor: THEME.colors.creamSurface,
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 2.5,
     borderColor: '#09090b',
     shadowColor: '#09090b',

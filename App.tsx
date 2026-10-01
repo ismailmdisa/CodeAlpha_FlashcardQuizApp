@@ -69,7 +69,7 @@ function AppNavigator() {
   };
 
   return (
-    <View style={styles.root}>
+    <View style={styles.appContainer}>
       {/* Dynamic Screen View */}
       {currentScreen === 'dashboard' ? (
         <DashboardScreen
@@ -183,6 +183,14 @@ export default function App() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#18181b',
+    backgroundColor: '#111113',
+  },
+  appContainer: {
+    flex: 1,
+    backgroundColor: THEME.colors.background,
+    position: 'relative',
+    overflow: 'hidden',
+    width: '100%',
+    height: '100%',
   },
 });
