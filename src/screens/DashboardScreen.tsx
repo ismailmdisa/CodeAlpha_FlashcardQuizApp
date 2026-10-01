@@ -33,12 +33,16 @@ interface DashboardScreenProps {
   onStartQuiz: (mode: string) => void;
   onOpenLibrary: () => void;
   onOpenAddCard: () => void;
+  onOpenBadges?: () => void;
+  onOpenRanks?: () => void;
 }
 
 export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   onStartQuiz,
   onOpenLibrary,
   onOpenAddCard,
+  onOpenBadges,
+  onOpenRanks,
 }) => {
   const { currentStreak, bestStreak, xp, soundEnabled, toggleSound } = useGamification();
   const { cards } = useFlashcards();
@@ -384,7 +388,15 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         </View>
 
         {/* Mini Player Stat Bar */}
-        <View style={styles.statPillBar}>
+        <TouchableOpacity
+          style={styles.statPillBar}
+          onPress={() => {
+            if (soundEnabled) soundFx.playSuccess();
+            if (onOpenRanks) onOpenRanks();
+          }}
+          activeOpacity={0.8}
+          aria-label="View Leaderboard Ranks"
+        >
           <Flame size={18} color={THEME.colors.punchCoral} />
           <Text style={styles.statPillBold}>{currentStreak || 5} Day Streak</Text>
           <Text style={styles.statPillDot}>•</Text>
@@ -392,7 +404,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
           <Text style={styles.statPillMuted}>
             High Score: <Text style={styles.statPillBold}>{bestStreak * 120 || 980}</Text>
           </Text>
-        </View>
+        </TouchableOpacity>
 
         {/* POPPING RIGHT NOW Social Feed */}
         <View style={styles.socialSection}>
@@ -401,7 +413,15 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <Text style={styles.socialLiveCount}>2.4k live players</Text>
           </View>
 
-          <View style={styles.socialCard}>
+          <TouchableOpacity
+            style={styles.socialCard}
+            onPress={() => {
+              if (soundEnabled) soundFx.playClick();
+              if (onOpenRanks) onOpenRanks();
+            }}
+            activeOpacity={0.8}
+            aria-label="View live players leaderboard"
+          >
             <View style={styles.socialUserGroup}>
               <View style={styles.userAvatarBox}>
                 <Text style={styles.avatarEmoji}>🐶</Text>
@@ -414,7 +434,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <View style={styles.xpPill}>
               <Text style={styles.xpPillText}>+120 XP</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Bottom padding so content isn't hidden under floating bar */}
@@ -424,54 +444,63 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
       {/* Floating Bottom Navigation Bar */}
       <View style={styles.bottomNavContainer}>
         <View style={styles.bottomNavPill}>
-          {/* Play Tab (Active) */}
+          {/* Play Tab */}
           <TouchableOpacity
             style={[styles.navTab, activeTab === 'play' && styles.navTabActive]}
-            onPress={() => setActiveTab('play')}
+            onPress={() => {
+              setActiveTab('play');
+              if (soundEnabled) soundFx.playClick();
+            }}
             activeOpacity={0.8}
             aria-label="Play Tab"
           >
             <Sparkles size={18} color="#09090b" />
-            <Text style={styles.navTabTextActive}>Play</Text>
+            <Text style={activeTab === 'play' ? styles.navTabTextActive : styles.navTabText}>Play</Text>
           </TouchableOpacity>
 
           {/* Decks Tab (Opens Library Modal) */}
           <TouchableOpacity
-            style={styles.navTab}
-            onPress={onOpenLibrary}
+            style={[styles.navTab, activeTab === 'decks' && styles.navTabActive]}
+            onPress={() => {
+              setActiveTab('decks');
+              if (soundEnabled) soundFx.playClick();
+              onOpenLibrary();
+            }}
             activeOpacity={0.7}
             aria-label="Decks Library"
           >
-            <Layers size={18} color="#71717a" />
-            <Text style={styles.navTabText}>Decks</Text>
+            <Layers size={18} color={activeTab === 'decks' ? '#09090b' : '#71717a'} />
+            <Text style={activeTab === 'decks' ? styles.navTabTextActive : styles.navTabText}>Decks</Text>
           </TouchableOpacity>
 
-          {/* Badges Tab */}
+          {/* Badges Tab (Opens Badges Modal) */}
           <TouchableOpacity
-            style={styles.navTab}
+            style={[styles.navTab, activeTab === 'badges' && styles.navTabActive]}
             onPress={() => {
+              setActiveTab('badges');
               if (soundEnabled) soundFx.playSuccess();
-              setMascotBubble(`You have a ${currentStreak || 5} Day Streak! Keep flexing! 🔥`);
+              if (onOpenBadges) onOpenBadges();
             }}
             activeOpacity={0.7}
             aria-label="Badges"
           >
-            <Award size={18} color="#71717a" />
-            <Text style={styles.navTabText}>Badges</Text>
+            <Award size={18} color={activeTab === 'badges' ? '#09090b' : '#71717a'} />
+            <Text style={activeTab === 'badges' ? styles.navTabTextActive : styles.navTabText}>Badges</Text>
           </TouchableOpacity>
 
-          {/* Ranks Tab */}
+          {/* Ranks Tab (Opens Ranks Modal) */}
           <TouchableOpacity
-            style={styles.navTab}
+            style={[styles.navTab, activeTab === 'ranks' && styles.navTabActive]}
             onPress={() => {
+              setActiveTab('ranks');
               if (soundEnabled) soundFx.playClick();
-              setMascotBubble(`Your Status: GALAXY BRAIN (${xp} XP) 👑`);
+              if (onOpenRanks) onOpenRanks();
             }}
             activeOpacity={0.7}
             aria-label="Leaderboard Ranks"
           >
-            <BarChart3 size={18} color="#71717a" />
-            <Text style={styles.navTabText}>Ranks</Text>
+            <BarChart3 size={18} color={activeTab === 'ranks' ? '#09090b' : '#71717a'} />
+            <Text style={activeTab === 'ranks' ? styles.navTabTextActive : styles.navTabText}>Ranks</Text>
           </TouchableOpacity>
         </View>
       </View>

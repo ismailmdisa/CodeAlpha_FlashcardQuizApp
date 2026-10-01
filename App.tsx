@@ -9,10 +9,14 @@ import { FlashcardScreen } from './src/screens/FlashcardScreen';
 import { AddEditCardModal } from './src/components/AddEditCardModal';
 import { DeleteConfirmModal } from './src/components/DeleteConfirmModal';
 import { CardListModal } from './src/components/CardListModal';
+import { BadgesModal } from './src/components/BadgesModal';
+import { RanksModal } from './src/components/RanksModal';
 import { THEME } from './src/theme/flashcardTheme';
 
 function AppNavigator() {
   const [currentScreen, setCurrentScreen] = useState<'dashboard' | 'quiz'>('dashboard');
+  const [isBadgesModalOpen, setIsBadgesModalOpen] = useState<boolean>(false);
+  const [isRanksModalOpen, setIsRanksModalOpen] = useState<boolean>(false);
 
   const {
     cards,
@@ -51,6 +55,14 @@ function AppNavigator() {
     setIsAddModalOpen(true);
   };
 
+  const handleOpenBadges = () => {
+    setIsBadgesModalOpen(true);
+  };
+
+  const handleOpenRanks = () => {
+    setIsRanksModalOpen(true);
+  };
+
   const handleBackToDashboard = () => {
     setCurrentScreen('dashboard');
   };
@@ -63,6 +75,8 @@ function AppNavigator() {
           onStartQuiz={handleStartQuiz}
           onOpenLibrary={handleOpenLibrary}
           onOpenAddCard={handleOpenAddCard}
+          onOpenBadges={handleOpenBadges}
+          onOpenRanks={handleOpenRanks}
         />
       ) : (
         <FlashcardScreen onBackToDashboard={handleBackToDashboard} />
@@ -131,6 +145,18 @@ function AppNavigator() {
         onResetDefaults={async () => {
           await resetToDefaultDeck();
         }}
+      />
+
+      {/* 5. Trophy Cabinet & Badges Modal */}
+      <BadgesModal
+        visible={isBadgesModalOpen}
+        onClose={() => setIsBadgesModalOpen(false)}
+      />
+
+      {/* 6. Global Leaderboard & Brain Ranks Modal */}
+      <RanksModal
+        visible={isRanksModalOpen}
+        onClose={() => setIsRanksModalOpen(false)}
       />
     </View>
   );
