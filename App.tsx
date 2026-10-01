@@ -11,6 +11,7 @@ import { DeleteConfirmModal } from './src/components/DeleteConfirmModal';
 import { CardListModal } from './src/components/CardListModal';
 import { BadgesModal } from './src/components/BadgesModal';
 import { RanksModal } from './src/components/RanksModal';
+import { MobileDeviceFrame } from './src/components/MobileDeviceFrame';
 import { THEME } from './src/theme/flashcardTheme';
 
 function AppNavigator() {
@@ -169,7 +170,9 @@ export default function App() {
         <StatusBar style="dark" />
         <GamificationProvider>
           <FlashcardProvider>
-            <AppNavigator />
+            <MobileDeviceFrame>
+              <AppNavigator />
+            </MobileDeviceFrame>
           </FlashcardProvider>
         </GamificationProvider>
       </View>
@@ -180,6 +183,6 @@ export default function App() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: THEME.colors.background,
+    backgroundColor: '#18181b',
   },
 });
