@@ -138,7 +138,7 @@ CodeAlpha_FlashcardQuizApp/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/CodeAlpha_FlashcardQuizApp.git
+   git clone https://github.com/ismailmdisa/CodeAlpha_FlashcardQuizApp.git
    cd CodeAlpha_FlashcardQuizApp
    ```
 
@@ -167,7 +167,7 @@ CodeAlpha_FlashcardQuizApp/
 **Md. Ismail Hossen**
 - **Internship**: App Development Intern at **CodeAlpha** (Student ID: `CA/DF1/298576`)
 - **LinkedIn**: [Connect on LinkedIn](https://www.linkedin.com)
-- **GitHub**: [github.com](https://github.com)
+- **GitHub**: [@ismailmdisa](https://github.com/ismailmdisa)
 
 ---
 
