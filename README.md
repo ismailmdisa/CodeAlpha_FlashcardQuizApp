@@ -9,7 +9,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20iOS%20%7C%20Android-blue?style=for-the-badge)](https://expo.dev/)
 
+<br />
+
+<img src="docs/screenshots/dashboard_in_frame.png" alt="Pop Cartoon Flashcard Quiz App Preview" width="560" style="border-radius: 20px; box-shadow: 0 12px 36px rgba(0,0,0,0.25);" />
+
+<br /><br />
+
 **An interactive, gamified flashcard study application engineered with a Pop Cartoon Neo-brutalist design system, living mascot reactions, 3D tactile physics, 8-bit synthetic sound effects, and full offline CRUD management.**
+
+<br />
 
 [Features](#-features) • [CodeAlpha Matrix](#-codealpha-task-requirements) • [Screenshots](#-screenshots--ui-walkthrough) • [Tech Stack](#-tech-stack--architecture) • [Getting Started](#-getting-started) • [License](#-license)
 
