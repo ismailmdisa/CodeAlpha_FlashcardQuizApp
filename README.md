@@ -8,6 +8,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20iOS%20%7C%20Android-blue?style=for-the-badge)](https://expo.dev/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Open_Web_App-brightgreen?style=for-the-badge&logo=googlechrome&logoColor=white)](https://ismailmdisa.github.io/CodeAlpha_FlashcardQuizApp/)
 
 <br />
 
@@ -19,7 +20,7 @@
 
 <br />
 
-[Features](#-features) • [CodeAlpha Matrix](#-codealpha-task-requirements) • [Screenshots](#-screenshots--ui-walkthrough) • [Tech Stack](#-tech-stack--architecture) • [Getting Started](#-getting-started) • [License](#-license)
+[🚀 **Open Live App**](https://ismailmdisa.github.io/CodeAlpha_FlashcardQuizApp/) • [Features](#-features) • [CodeAlpha Matrix](#-codealpha-task-requirements) • [Screenshots](#-screenshots--ui-walkthrough) • [Tech Stack](#-tech-stack--architecture) • [Getting Started](#-getting-started) • [License](#-license)
 
 </div>
 
